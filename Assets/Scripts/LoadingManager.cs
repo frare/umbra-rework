@@ -12,6 +12,7 @@ public class LoadingManager : MonoBehaviour
     private bool isLoading;
 
     [Header("References")]
+    [SerializeField] private RectTransform canvas;
     [SerializeField] private RectTransform panel;
     [SerializeField] private TMP_Text textLoading;
 
@@ -28,7 +29,9 @@ public class LoadingManager : MonoBehaviour
         else Destroy(this.gameObject);
         DontDestroyOnLoad(gameObject);
 
-        panel.anchoredPosition = new Vector2(1920f, 0f);
+        canvas.gameObject.SetActive(true);
+        panel.anchoredPosition = new Vector2(canvas.rect.width, 0f);
+        canvas.gameObject.SetActive(false);
         isLoading = false;
     }
 
@@ -50,7 +53,8 @@ public class LoadingManager : MonoBehaviour
         SetVisibility(true);
         yield return new WaitForSeconds(slideTime);
 
-        yield return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
+        while (!asyncLoad.isDone) yield return null;
 
         yield return new WaitForSeconds(slideTime);
         SetVisibility(false);
@@ -67,11 +71,11 @@ public class LoadingManager : MonoBehaviour
 
     private IEnumerator Coroutine_SetActive(bool active)
     {
-        if (active) panel.gameObject.SetActive(true);
+        if (active) canvas.gameObject.SetActive(true);
 
         float time = 0f;
         Vector2 initialPosition = panel.anchoredPosition;
-        Vector2 targetPosition = active ? Vector2.zero : new Vector2(1920, 0);
+        Vector2 targetPosition = active ? Vector2.zero : new Vector2(canvas.rect.width, 0);
         while (time < slideTime)
         {
             time += Time.deltaTime;
@@ -80,6 +84,6 @@ public class LoadingManager : MonoBehaviour
         }
         panel.anchoredPosition = targetPosition;
 
-        if (!active) panel.gameObject.SetActive(false);
+        if (!active) canvas.gameObject.SetActive(false);
     }
 }
