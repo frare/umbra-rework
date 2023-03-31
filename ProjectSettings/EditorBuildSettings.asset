@@ -6,8 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Plugins/3rd Person Template/Scenes/Playground.unity
-    guid: e9017d5f96b9f09489b4b37e1d6eb914
+    path: Assets/Scenes/01-Menu.unity
+    guid: b05a2db9c038d6d4caeb86ef9d2d2e91
+  - enabled: 1
+    path: Assets/Scenes/02-Loading.unity
+    guid: 41ef2e8ddaec30a4aa3a3713a5897e1e
+  - enabled: 1
+    path: Assets/Scenes/02-Game.unity
+    guid: ee3129bfefd2ec04398c306d909558ab
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 9e7be553448fa2546aea5752021cbcf7,
       type: 2}
