@@ -47,8 +47,6 @@ public class LoadingManager : MonoBehaviour
 
     private IEnumerator Coroutine_LoadScene(string sceneName)
     {
-        isLoading = true;
-        instance.enabled = true;
         SetVisibility(true);
         yield return new WaitForSeconds(slideTime);
 
@@ -56,14 +54,15 @@ public class LoadingManager : MonoBehaviour
 
         yield return new WaitForSeconds(slideTime);
         SetVisibility(false);
-        instance.enabled = false;
-        isLoading = false;
     }
 
     private void SetVisibility(bool active)
     {
         if (coroutineSlide != null) StopCoroutine(coroutineSlide);
         coroutineSlide = StartCoroutine(Coroutine_SetActive(active));
+
+        instance.enabled = active;
+        isLoading = active;
     }
 
     private IEnumerator Coroutine_SetActive(bool active)
