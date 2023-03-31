@@ -267,7 +267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: {fileID: 8650514220645753787}
   textLoading: {fileID: 8650514220229843852}
-  slideTime: 1.5
+  slideTime: 1
 --- !u!223 &8650514220591856817
 Canvas:
   m_ObjectHideFlags: 0
