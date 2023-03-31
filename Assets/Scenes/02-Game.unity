@@ -1272,7 +1272,7 @@ GameObject:
   m_Layer: 0
   m_Name: USER INTERFACE
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 2800000, guid: 4d5bd7e0f7f3c7f4585a0f3be1951232, type: 3}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1329,7 +1329,7 @@ GameObject:
   m_Layer: 0
   m_Name: SCENE OBJECTS
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 2800000, guid: 4d5bd7e0f7f3c7f4585a0f3be1951232, type: 3}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1715,7 +1715,7 @@ GameObject:
   m_Layer: 0
   m_Name: GAME ENTITIES
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 2800000, guid: 4d5bd7e0f7f3c7f4585a0f3be1951232, type: 3}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
