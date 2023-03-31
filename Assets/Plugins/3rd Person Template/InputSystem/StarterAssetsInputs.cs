@@ -43,6 +43,11 @@ namespace StarterAssets
 		{
 			SprintInput(value.isPressed);
 		}
+
+		public void OnEscape(InputValue value)
+		{
+			ToggleCursorState();
+		}
 #endif
 
 
@@ -74,6 +79,12 @@ namespace StarterAssets
 		private void SetCursorState(bool newState)
 		{
 			Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
+		}
+		
+		private void ToggleCursorState()
+		{
+			cursorLocked = !cursorLocked;
+			SetCursorState(cursorLocked);
 		}
 	}
 	
