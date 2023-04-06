@@ -83,7 +83,32 @@ public class ThirdPersonController : MonoBehaviour
 
     private void Move()
     {
+        float targetSpeed = input.sprint ? sprintSpeed : moveSpeed;
+        if (input.move == Vector2.zero) targetSpeed = 0f;
 
+        float currentHorizontalSpeed = new Vector3(controller.velocity.x, 0f, controller.velocity.z).magnitude;
+        float speedOffset = 0.1f;
+        float inputMagnitude = input.analogMovement ? input.move.magnitude : 1f;
+
+        if (currentHorizontalSpeed < targetSpeed - speedOffset ||
+            currentHorizontalSpeed > targetSpeed + speedOffset)
+        {
+            speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude, Time.deltaTime * acceleration);
+            speed = Mathf.Round(speed * 1000f) / 1000f;
+        }
+        else speed = targetSpeed;
+
+        Vector3 inputDirection = new Vector3(input.move.x, 0f, input.move.y).normalized;
+        if (input.move != Vector2.zero)
+        {
+            targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + mainCamera.transform.eulerAngles.y;
+            float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref rotationVelocity, rotationSmoothTime);
+
+            transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+        }
+
+        Vector3 targetDirection = (Quaternion.Euler(0f, targetRotation, 0f) * Vector3.forward).normalized;
+        controller.Move(targetDirection * speed * Time.deltaTime + new Vector3(0f, verticalVelocity, 0f) * Time.deltaTime);
     }
 
     private void CameraRotation()
