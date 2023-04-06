@@ -13,22 +13,10 @@ public class ThirdPersonController : MonoBehaviour
     [SerializeField] private float rotationSmoothTime = 0.12f;
     [SerializeField] private float acceleration = 10f;
     private float speed;
+    private const float speedOffset = 0.1f;
     private float targetRotation = 0f;
     private float rotationVelocity;
     private float verticalVelocity;
-    // private float terminalVelocity = 53f;
-    
-    // [Space(10)]
-    // [SerializeField] private float jumpHeight = 1.2f;
-    // [SerializeField] private float gravity = -15f;
-    // [SerializeField] private float jumpTimeout = 0.5f;
-    // [SerializeField] private float fallTimeout = 0.15f;
-    // [SerializeField] private bool grounded = true;
-    // [SerializeField] private float groundOffset = -0.14f;
-    // [SerializeField] private float groundedRadius = 0.28f;
-    // [SerializeField] private LayerMask groundLayers;
-    // private float jumpTimeoutDelta;
-    // private float fallTimeoutDelta;
 
     [Header("Cinemachine")]
     [SerializeField] private GameObject cinemachineCameraTarget;
@@ -52,15 +40,10 @@ public class ThirdPersonController : MonoBehaviour
     private void Start()
     {
         cinemachineTargetYaw = cinemachineCameraTarget.transform.eulerAngles.y;
-    
-        // jumpTimeoutDelta = jumpTimeout;
-        // fallTimeoutDelta = fallTimeout;
     }
 
     private void Update()
     {
-        // JumpAndGravity();
-        // GroundedCheck();
         Move();
     }
 
@@ -69,29 +52,15 @@ public class ThirdPersonController : MonoBehaviour
         CameraRotation();
     }
 
-
-    private void JumpAndGravity()
-    {
-
-    }
-
-    private void GroundedCheck()
-    {
-        // Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - groundOffset, transform.position.z);
-        // grounded = Physics.CheckSphere(spherePosition, groundedRadius, groundLayers, QueryTriggerInteraction.Ignore);
-    }
+    
 
     private void Move()
     {
-        float targetSpeed = input.sprint ? sprintSpeed : moveSpeed;
-        if (input.move == Vector2.zero) targetSpeed = 0f;
-
+        float targetSpeed = input.move == Vector2.zero ? 0f : (input.sprint ? sprintSpeed : moveSpeed);
         float currentHorizontalSpeed = new Vector3(controller.velocity.x, 0f, controller.velocity.z).magnitude;
-        float speedOffset = 0.1f;
         float inputMagnitude = input.analogMovement ? input.move.magnitude : 1f;
 
-        if (currentHorizontalSpeed < targetSpeed - speedOffset ||
-            currentHorizontalSpeed > targetSpeed + speedOffset)
+        if (currentHorizontalSpeed < targetSpeed - speedOffset || currentHorizontalSpeed > targetSpeed + speedOffset)
         {
             speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude, Time.deltaTime * acceleration);
             speed = Mathf.Round(speed * 1000f) / 1000f;
@@ -108,6 +77,7 @@ public class ThirdPersonController : MonoBehaviour
         }
 
         Vector3 targetDirection = (Quaternion.Euler(0f, targetRotation, 0f) * Vector3.forward).normalized;
+
         controller.Move(targetDirection * speed * Time.deltaTime + new Vector3(0f, verticalVelocity, 0f) * Time.deltaTime);
     }
 
