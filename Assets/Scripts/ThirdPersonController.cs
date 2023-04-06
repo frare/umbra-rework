@@ -39,7 +39,7 @@ public class ThirdPersonController : MonoBehaviour
     private float cinemachineTargetYaw;
     private float cinemachineTargetPitch;
     private const float threshold = 0.01f;
-    private bool isCurrentDeviceMouse = true; // temporário, alterar para ser dinâmico de acordo com o input
+    private bool isCurrentDeviceMouse { get { return playerInput.currentControlScheme == "KeyboardMouse"; } }
 
     [Header("Components")]
     [SerializeField] private PlayerInput playerInput;
