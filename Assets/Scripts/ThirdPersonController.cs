@@ -16,19 +16,19 @@ public class ThirdPersonController : MonoBehaviour
     private float targetRotation = 0f;
     private float rotationVelocity;
     private float verticalVelocity;
-    private float terminalVelocity = 53f;
+    // private float terminalVelocity = 53f;
     
-    [Space(10)]
-    [SerializeField] private float jumpHeight = 1.2f;
-    [SerializeField] private float gravity = -15f;
-    [SerializeField] private float jumpTimeout = 0.5f;
-    [SerializeField] private float fallTimeout = 0.15f;
-    [SerializeField] private bool grounded = true;
-    [SerializeField] private float groundOffset = -0.14f;
-    [SerializeField] private float groundedRadius = 0.28f;
-    [SerializeField] private LayerMask groundLayers;
-    private float jumpTimeoutDelta;
-    private float fallTimeoutDelta;
+    // [Space(10)]
+    // [SerializeField] private float jumpHeight = 1.2f;
+    // [SerializeField] private float gravity = -15f;
+    // [SerializeField] private float jumpTimeout = 0.5f;
+    // [SerializeField] private float fallTimeout = 0.15f;
+    // [SerializeField] private bool grounded = true;
+    // [SerializeField] private float groundOffset = -0.14f;
+    // [SerializeField] private float groundedRadius = 0.28f;
+    // [SerializeField] private LayerMask groundLayers;
+    // private float jumpTimeoutDelta;
+    // private float fallTimeoutDelta;
 
     [Header("Cinemachine")]
     [SerializeField] private GameObject cinemachineCameraTarget;
@@ -41,7 +41,7 @@ public class ThirdPersonController : MonoBehaviour
     private const float threshold = 0.01f;
     private bool isCurrentDeviceMouse { get { return playerInput.currentControlScheme == "KeyboardMouse"; } }
 
-    [Header("Components")]
+    [Header("References")]
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private CharacterController controller;
     [SerializeField] private InputManager input;
@@ -53,14 +53,14 @@ public class ThirdPersonController : MonoBehaviour
     {
         cinemachineTargetYaw = cinemachineCameraTarget.transform.eulerAngles.y;
     
-        jumpTimeoutDelta = jumpTimeout;
-        fallTimeoutDelta = fallTimeout;
+        // jumpTimeoutDelta = jumpTimeout;
+        // fallTimeoutDelta = fallTimeout;
     }
 
     private void Update()
     {
-        JumpAndGravity();
-        GroundedCheck();
+        // JumpAndGravity();
+        // GroundedCheck();
         Move();
     }
 
@@ -77,8 +77,8 @@ public class ThirdPersonController : MonoBehaviour
 
     private void GroundedCheck()
     {
-        Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - groundOffset, transform.position.z);
-        grounded = Physics.CheckSphere(spherePosition, groundedRadius, groundLayers, QueryTriggerInteraction.Ignore);
+        // Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - groundOffset, transform.position.z);
+        // grounded = Physics.CheckSphere(spherePosition, groundedRadius, groundLayers, QueryTriggerInteraction.Ignore);
     }
 
     private void Move()
