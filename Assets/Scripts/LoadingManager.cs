@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;
 
 public class LoadingManager : MonoBehaviour
 {
@@ -14,12 +13,17 @@ public class LoadingManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private RectTransform canvas;
     [SerializeField] private RectTransform panel;
-    [SerializeField] private TMP_Text textLoading;
+    [SerializeField] private RectTransform minutesHandle;
+    [SerializeField] private RectTransform hoursHandle;
 
     [Header("Attributes")]
     [SerializeField] private float slideTime;
+    [SerializeField] private float minDuration;
+    [SerializeField] private float minutesSpeed;
+    [SerializeField] private float hoursSpeed;
 
     private Coroutine coroutineSlide;
+    private bool timeForward = true;
 
 
 
@@ -37,15 +41,19 @@ public class LoadingManager : MonoBehaviour
 
     private void Update()
     {
-        textLoading.rectTransform.localEulerAngles += new Vector3(0f, 0f, Time.deltaTime * 2.5f);
-        textLoading.rectTransform.localScale = new Vector3(1f + Mathf.Sin(Time.time) / 2, 1f + Mathf.Sin(Time.time) / 2, 0f);
+        minutesHandle.localEulerAngles += new Vector3(0f, 0f, minutesSpeed * (timeForward ? -1f : 1f) * Time.deltaTime);
+        hoursHandle.localEulerAngles += new Vector3(0f, 0f, hoursSpeed * (timeForward ? -1f : 1f) * Time.deltaTime);
     }
 
 
 
-    public static void LoadScene(string sceneName)
+    public static void LoadScene(string sceneName, bool timeForward = true)
     {
-        if (!loading) instance.StartCoroutine(instance.Coroutine_LoadScene(sceneName));
+        if (!loading) 
+        {
+            instance.timeForward = timeForward;
+            instance.StartCoroutine(instance.Coroutine_LoadScene(sceneName));
+        }
     }
 
     private IEnumerator Coroutine_LoadScene(string sceneName)
@@ -56,12 +64,19 @@ public class LoadingManager : MonoBehaviour
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
         while (!asyncLoad.isDone) yield return null;
 
+        yield return new WaitForSeconds(minDuration);
         yield return new WaitForSeconds(slideTime);
         SetVisibility(false);
     }
 
     private void SetVisibility(bool active)
     {
+        if (active)
+        {
+            minutesHandle.localEulerAngles = new Vector3(0f, 0f, Random.Range(0f, 359f));
+            hoursHandle.localEulerAngles = new Vector3(0f, 0f, Random.Range(0f, 359f));
+        }
+
         if (coroutineSlide != null) StopCoroutine(coroutineSlide);
         coroutineSlide = StartCoroutine(Coroutine_SetActive(active));
 
