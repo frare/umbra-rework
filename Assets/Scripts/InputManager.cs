@@ -43,6 +43,11 @@ public class InputManager : MonoBehaviour
         ToggleCursorState();
     }
 
+    public void OnVisor(InputValue value)
+    {
+        if (value.isPressed)  NightVisionManager.Toggle();
+    }
+
 
 
 
