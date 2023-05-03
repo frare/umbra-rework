@@ -7,8 +7,8 @@ public class NightVisionManager : MonoBehaviour
     public static NightVisionManager instance;
 
     [SerializeField] private bool isActive;
-    [SerializeField] private Color defaultColor;
-    [SerializeField] private Color boostedColor;
+    [SerializeField, ColorUsage(true, true)] private Color defaultColor;
+    [SerializeField, ColorUsage(true, true)] private Color boostedColor;
 
     private UnityEngine.Rendering.Volume volume;
 

@@ -1393,7 +1393,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isActive: 0
   defaultColor: {r: 0, g: 0, b: 0, a: 0}
-  boostedColor: {r: 1, g: 1, b: 1, a: 1}
+  boostedColor: {r: 2, g: 2, b: 2, a: 1}
 --- !u!1 &1440278968
 GameObject:
   m_ObjectHideFlags: 0
