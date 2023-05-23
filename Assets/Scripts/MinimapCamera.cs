@@ -21,6 +21,6 @@ public class MinimapCamera : MonoBehaviour
     private void LateUpdate()
     {
         transform.position = positionToFollow.position + positionOffset;
-        transform.eulerAngles = rotationToFollow.eulerAngles + rotationOffset;
+        transform.eulerAngles = new Vector3(rotationOffset.x, rotationToFollow.eulerAngles.y, rotationToFollow.eulerAngles.z);
     }
 }
