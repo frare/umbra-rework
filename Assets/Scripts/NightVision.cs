@@ -7,10 +7,12 @@ public class NightVision : MonoBehaviour
     [SerializeField] private float duration;
     [SerializeField] private float cooldown;
     [SerializeField, ColorUsage(true, true)] private Color boostedColor;
+    [SerializeField, Range(0f, 50f)] private int boostedIntensity;
 
     private bool isActive;
     private bool inCooldown;
     private Color defaultColor;
+    private float defaultIntensity;
     private UnityEngine.Rendering.Volume volume;
 
 
@@ -30,6 +32,7 @@ public class NightVision : MonoBehaviour
     {
         isActive = enabled;
         volume.weight = enabled ? 1 : 0;
+        RenderSettings.ambientIntensity = enabled ? boostedIntensity : defaultIntensity;
         RenderSettings.ambientLight = enabled ? boostedColor : defaultColor;
 
         if (enabled)
