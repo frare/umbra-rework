@@ -9,6 +9,7 @@ public class InputManager : MonoBehaviour
     public Vector2 look { get; private set; }
     public bool jump { get; private set; }
     public bool sprint { get; private set; }
+    public bool visor { get; private set; }
 
     public bool analogMovement { get; private set; }
 
@@ -16,36 +17,43 @@ public class InputManager : MonoBehaviour
     public bool cursorInputForLook { get; private set; } = true;
 
 
+    // EVENTS
+    public delegate void OnVisorEvent();
+    public OnVisorEvent onVisorPressed;
+
+
 
     // INPUT SYSTEM CALLBACKS
-    public void OnMove(InputValue value)
+    private void OnMove(InputValue value)
     {
         MoveInput(value.Get<Vector2>());
     }
 
-    public void OnLook(InputValue value)
+    private void OnLook(InputValue value)
     {
         if (cursorInputForLook) LookInput(value.Get<Vector2>());
     }
 
-    public void OnJump(InputValue value)
+    private void OnJump(InputValue value)
     {
         JumpInput(value.isPressed);
     }
 
-    public void OnSprint(InputValue value)
+    private void OnSprint(InputValue value)
     {
         SprintInput(value.isPressed);
     }
 
-    public void OnEscape(InputValue value)
+    private void OnEscape(InputValue value)
     {
         ToggleCursorState();
     }
 
-    public void OnVisor(InputValue value)
+    private void OnVisor(InputValue value)
     {
-        if (value.isPressed)  NightVisionManager.Toggle();
+        VisorInput(value.isPressed);
+
+        if (onVisorPressed != null) onVisorPressed();
     }
 
 
@@ -69,6 +77,11 @@ public class InputManager : MonoBehaviour
     public void SprintInput(bool newSprintState)
     {
         sprint = newSprintState;
+    }
+
+    public void VisorInput(bool newVisorState)
+    {
+        visor = newVisorState;
     }
 
     private void OnApplicationFocus(bool hasFocus)

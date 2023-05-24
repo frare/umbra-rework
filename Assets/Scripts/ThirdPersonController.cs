@@ -34,12 +34,15 @@ public class ThirdPersonController : MonoBehaviour
     [SerializeField] private CharacterController controller;
     [SerializeField] private InputManager input;
     [SerializeField] private GameObject mainCamera;
+    [SerializeField] private NightVision nightVision;
 
 
 
     private void Start()
     {
         cinemachineTargetYaw = cinemachineCameraTarget.transform.eulerAngles.y;
+
+        input.onVisorPressed += nightVision.TryToEnable;
     }
 
     private void Update()
