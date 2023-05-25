@@ -35,11 +35,7 @@ public class NightVision : MonoBehaviour
         RenderSettings.ambientIntensity = enabled ? boostedIntensity : defaultIntensity;
         RenderSettings.ambientLight = enabled ? boostedColor : defaultColor;
 
-        if (enabled)
-        {
-            StartCoroutine(AutoDisable());
-            StartCoroutine(Cooldown());
-        }
+        if (enabled) StartCoroutine(AutoDisable());
     }
 
     public void TryToEnable()
@@ -54,13 +50,25 @@ public class NightVision : MonoBehaviour
         yield return new WaitForSeconds(duration);
 
         SetEnabled(false);
+
+        StartCoroutine(Cooldown());
     }
 
     private IEnumerator Cooldown()
     {
         inCooldown = true;
 
-        yield return new WaitForSeconds(cooldown);
+        float time = cooldown;
+        float normalizedTime = 1f;
+        while (time >= 0f)
+        {
+            time -= Time.deltaTime;
+            normalizedTime = time / cooldown;
+
+            UIManager.UpdateVisorCooldown(normalizedTime);
+
+            yield return null;
+        }
 
         inCooldown = false;
     }
