@@ -9,7 +9,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - IgnoreLight
   - Water
   - UI
   - 
@@ -17,7 +17,7 @@ TagManager:
   - Character
   - Ground
   - PostProcessing
-  - 
+  - Minimap
   - 
   - 
   - 
