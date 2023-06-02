@@ -105,14 +105,15 @@ public class ThirdPersonController : MonoBehaviour
 
     private void TryInteract()
     {
-        Debug.Log("try interact");
-
         Transform cam = Camera.main.transform;
         RaycastHit hit;
-        if (Physics.Raycast(cam.position, cam.transform.forward, out hit, interactDistance, 1 << Page.layer | 1 << 7, QueryTriggerInteraction.Collide))
+        if (Physics.Raycast(cam.position, cam.transform.forward, out hit, Mathf.Infinity, 1 << Page.layer | 1 << 7, QueryTriggerInteraction.Collide))
         {
-            if (hit.collider.gameObject.layer == Page.layer)
+            if (hit.collider.gameObject.layer == Page.layer &&
+                Vector3.Distance(transform.position, hit.transform.position) > interactDistance)
+            {
                 hit.collider.gameObject.GetComponent<Page>().Collect();
+            }
         }
     }
 
