@@ -7,9 +7,7 @@ public class InputManager : MonoBehaviour
 {
     public Vector2 move { get; private set; }
     public Vector2 look { get; private set; }
-    public bool jump { get; private set; }
     public bool sprint { get; private set; }
-    public bool visor { get; private set; }
 
     public bool analogMovement { get; private set; }
 
@@ -18,8 +16,10 @@ public class InputManager : MonoBehaviour
 
 
     // EVENTS
-    public delegate void OnVisorEvent();
-    public OnVisorEvent onVisorPressed;
+    public delegate void OnVisorPressed();
+    public OnVisorPressed onVisorPressed;
+    public delegate void OnInteractPressed();
+    public OnInteractPressed onInteractPressed;
 
 
 
@@ -34,11 +34,6 @@ public class InputManager : MonoBehaviour
         if (cursorInputForLook) LookInput(value.Get<Vector2>());
     }
 
-    private void OnJump(InputValue value)
-    {
-        JumpInput(value.isPressed);
-    }
-
     private void OnSprint(InputValue value)
     {
         SprintInput(value.isPressed);
@@ -51,9 +46,12 @@ public class InputManager : MonoBehaviour
 
     private void OnVisor(InputValue value)
     {
-        VisorInput(value.isPressed);
-
         if (onVisorPressed != null) onVisorPressed();
+    }
+
+    private void OnInteract(InputValue value)
+    {
+        if (onInteractPressed != null) onInteractPressed();
     }
 
 
@@ -69,19 +67,9 @@ public class InputManager : MonoBehaviour
         look = newLookDirection;
     }
 
-    public void JumpInput(bool newJumpState)
-    {
-        jump = newJumpState;
-    }
-
     public void SprintInput(bool newSprintState)
     {
         sprint = newSprintState;
-    }
-
-    public void VisorInput(bool newVisorState)
-    {
-        visor = newVisorState;
     }
 
     private void OnApplicationFocus(bool hasFocus)

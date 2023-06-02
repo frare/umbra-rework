@@ -12,6 +12,7 @@ public class ThirdPersonController : MonoBehaviour
     [SerializeField] private float sprintSpeed = 5f;
     [SerializeField] private float rotationSmoothTime = 0.12f;
     [SerializeField] private float acceleration = 10f;
+    [SerializeField] private float interactDistance = 2.5f;
     private float speed;
     private const float speedOffset = 0.1f;
     private float targetRotation = 0f;
@@ -19,7 +20,7 @@ public class ThirdPersonController : MonoBehaviour
     private float verticalVelocity;
 
     [Header("Cinemachine")]
-    [SerializeField] private GameObject cinemachineCameraTarget;
+    [SerializeField] private Transform cinemachineCameraTarget;
     [SerializeField] private float cameraTopClamp = 70f;
     [SerializeField] private float cameraBottomClamp = -30f;
     [SerializeField] private float cameraAngleOverride = 0f;
@@ -40,9 +41,10 @@ public class ThirdPersonController : MonoBehaviour
 
     private void Start()
     {
-        cinemachineTargetYaw = cinemachineCameraTarget.transform.eulerAngles.y;
+        cinemachineTargetYaw = cinemachineCameraTarget.eulerAngles.y;
 
         input.onVisorPressed += nightVision.TryToEnable;
+        input.onInteractPressed += TryInteract;
     }
 
     private void Update()
@@ -97,14 +99,27 @@ public class ThirdPersonController : MonoBehaviour
         cinemachineTargetYaw = ClampAngle(cinemachineTargetYaw, float.MinValue, float.MaxValue);
         cinemachineTargetPitch = ClampAngle(cinemachineTargetPitch, cameraBottomClamp, cameraTopClamp);
 
-        cinemachineCameraTarget.transform.rotation = 
+        cinemachineCameraTarget.rotation = 
             Quaternion.Euler(cinemachineTargetPitch + cameraAngleOverride, cinemachineTargetYaw, 0.0f);
     }
 
-    private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
+    private void TryInteract()
     {
-        if (lfAngle < -360f) lfAngle += 360f;
-        if (lfAngle > 360f) lfAngle -= 360f;
-        return Mathf.Clamp(lfAngle, lfMin, lfMax);
+        Debug.Log("try interact");
+
+        Transform cam = Camera.main.transform;
+        RaycastHit hit;
+        if (Physics.Raycast(cam.position, cam.transform.forward, out hit, interactDistance, 1 << Page.layer | 1 << 7, QueryTriggerInteraction.Collide))
+        {
+            if (hit.collider.gameObject.layer == Page.layer)
+                hit.collider.gameObject.GetComponent<Page>().Collect();
+        }
+    }
+
+    private static float ClampAngle(float angle, float min, float max)
+    {
+        if (angle < -360f) angle += 360f;
+        if (angle > 360f) angle -= 360f;
+        return Mathf.Clamp(angle, min, max);
     }
 }
