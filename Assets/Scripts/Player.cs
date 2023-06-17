@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(CharacterController))]
-[RequireComponent(typeof(PlayerInput))]
-public class ThirdPersonController : MonoBehaviour
+public class Player : MonoBehaviour
 {
-    [Header("Player")]
+    private static Player instance;
+
+    [Header("Player Attributes")]
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private float sprintSpeed = 5f;
     [SerializeField] private float rotationSmoothTime = 0.12f;
@@ -34,10 +34,17 @@ public class ThirdPersonController : MonoBehaviour
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private CharacterController controller;
     [SerializeField] private InputManager input;
-    [SerializeField] private GameObject mainCamera;
     [SerializeField] private NightVision nightVision;
+    private Transform mainCamera;
+    private UnityEngine.UI.Image reticle;
+    private RaycastHit reticleHit;
 
 
+
+    private void Awake()
+    {
+        Player.instance = this;
+    }
 
     private void Start()
     {
@@ -45,11 +52,14 @@ public class ThirdPersonController : MonoBehaviour
 
         input.onVisorPressed += nightVision.TryToEnable;
         input.onInteractPressed += TryInteract;
+
+        mainCamera = Camera.main.transform;
     }
 
     private void Update()
     {
         Move();
+        UpdateReticle();
     }
 
     private void LateUpdate()
@@ -75,7 +85,7 @@ public class ThirdPersonController : MonoBehaviour
         Vector3 inputDirection = new Vector3(input.move.x, 0f, input.move.y).normalized;
         if (input.move != Vector2.zero)
         {
-            targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + mainCamera.transform.eulerAngles.y;
+            targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + mainCamera.eulerAngles.y;
             float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref rotationVelocity, rotationSmoothTime);
 
             transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
@@ -105,16 +115,30 @@ public class ThirdPersonController : MonoBehaviour
 
     private void TryInteract()
     {
-        Transform cam = Camera.main.transform;
         RaycastHit hit;
-        if (Physics.Raycast(cam.position, cam.transform.forward, out hit, Mathf.Infinity, 1 << Page.layer | 1 << 7, QueryTriggerInteraction.Collide))
+        if (Physics.Raycast(mainCamera.position, mainCamera.forward, out hit, Mathf.Infinity, 1 << Page.layer | 1 << 7, QueryTriggerInteraction.Collide))
         {
             if (hit.collider.gameObject.layer == Page.layer &&
-                Vector3.Distance(transform.position, hit.transform.position) > interactDistance)
+                Vector3.Distance(transform.position, hit.transform.position) <= interactDistance)
             {
                 hit.collider.gameObject.GetComponent<Page>().Collect();
             }
         }
+    }
+
+    private void UpdateReticle()
+    {
+        if (Physics.Raycast(mainCamera.position, mainCamera.forward, out reticleHit, Mathf.Infinity, 1 << Page.layer, QueryTriggerInteraction.Collide))
+        {
+            if (reticleHit.collider.gameObject.layer == Page.layer &&
+                Vector3.Distance(transform.position, reticleHit.transform.position) <= interactDistance)
+            {
+                UIManager.SetReticleSize(true);
+                return;
+            }
+        }
+        
+        UIManager.SetReticleSize(false);
     }
 
     private static float ClampAngle(float angle, float min, float max)

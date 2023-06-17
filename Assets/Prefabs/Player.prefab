@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1637254083}
   - component: {fileID: 1637254082}
   m_Layer: 8
-  m_Name: Quad
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -237,7 +237,7 @@ GameObject:
   m_Component:
   - component: {fileID: 162916969510316486}
   - component: {fileID: 651083173123060598}
-  - component: {fileID: 4369211250692261374}
+  - component: {fileID: 8589347290463579589}
   - component: {fileID: 4385191075915538825}
   - component: {fileID: 651083173123060592}
   m_Layer: 8
@@ -284,7 +284,7 @@ CharacterController:
   m_SkinWidth: 0.02
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.5, z: 0}
---- !u!114 &4369211250692261374
+--- !u!114 &8589347290463579589
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -293,14 +293,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 651083173123060604}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ddac75b6d7e73d40bc012c1f4ba4766, type: 3}
+  m_Script: {fileID: 11500000, guid: b96d5357c6af60740a66db750d2c7a2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2
   sprintSpeed: 5
   rotationSmoothTime: 0.12
   acceleration: 10
-  cinemachineCameraTarget: {fileID: 5187873574673582631}
+  interactDistance: 2.5
+  cinemachineCameraTarget: {fileID: 5187873574673582624}
   cameraTopClamp: 70
   cameraBottomClamp: -30
   cameraAngleOverride: 0
@@ -308,7 +309,6 @@ MonoBehaviour:
   playerInput: {fileID: 651083173123060592}
   controller: {fileID: 651083173123060598}
   input: {fileID: 4385191075915538825}
-  mainCamera: {fileID: 0}
   nightVision: {fileID: 3013265748644708261}
 --- !u!114 &4385191075915538825
 MonoBehaviour:
