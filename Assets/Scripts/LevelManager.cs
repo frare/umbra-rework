@@ -27,6 +27,8 @@ public class LevelManager : MonoBehaviour
     {
         instance.pagesCollectedCount++;
 
+        UIManager.UpdatePagesCount(instance.pagesCollectedCount, instance.pagesTotalCount);
+
         if (instance.pagesCollectedCount >= instance.pagesTotalCount)
             Debug.Log("All pages collected");
     }
