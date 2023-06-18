@@ -4,12 +4,8 @@ using UnityEngine;
 
 public class Flashlight : MonoBehaviour
 {
-    [SerializeField] private Transform sprite;
-
-
-
     private void LateUpdate()
     {
-        transform.localEulerAngles = sprite.localEulerAngles;
+        transform.forward = Camera.main.transform.forward;
     }
 }
