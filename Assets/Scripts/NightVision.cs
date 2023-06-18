@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class NightVision : MonoBehaviour
 {
@@ -13,14 +15,25 @@ public class NightVision : MonoBehaviour
     private bool inCooldown;
     private Color defaultColor;
     private float defaultIntensity;
-    private UnityEngine.Rendering.Volume volume;
+    private Volume volume;
+    private Transform mainCamera;
+    private Vignette vignette;
+    private ColorAdjustments colorAdjustments;
+    private FilmGrain filmGrain;
+
+    public delegate void OnEnemyCaught();
+    public event OnEnemyCaught onEnemyCaught;
 
 
 
     private void Awake()
     {
         defaultColor = RenderSettings.ambientLight;
-        volume = GetComponent<UnityEngine.Rendering.Volume>();
+        volume = GetComponent<Volume>();
+        volume.profile.TryGet<Vignette>(out vignette);
+        volume.profile.TryGet<ColorAdjustments>(out colorAdjustments);
+        volume.profile.TryGet<FilmGrain>(out filmGrain);
+        mainCamera = Camera.main.transform;
     }
 
     private void Start()
@@ -28,10 +41,26 @@ public class NightVision : MonoBehaviour
         SetEnabled(false);
     }
 
+    private void Update()
+    {
+        if (isActive)
+        {
+            RaycastHit hit;
+            if (Physics.SphereCast(mainCamera.position, .5f, EnemyManager.position - mainCamera.position, out hit, 50f, 
+                1 << EnemyManager.layer | 1 << 7, QueryTriggerInteraction.Collide))
+            {
+                if (hit.collider.gameObject.layer == EnemyManager.layer) onEnemyCaught?.Invoke();
+            }
+        }
+    }
+
     private void SetEnabled(bool enabled)
     {
         isActive = enabled;
-        volume.weight = enabled ? 1 : 0;
+        volume.enabled = enabled;
+        vignette.smoothness = new ClampedFloatParameter(.3f, 0f, 1f, true);
+        colorAdjustments.colorFilter = new ColorParameter(Color.green, true);
+        filmGrain.intensity = new ClampedFloatParameter(.5f, 0f, 1f, true);
         RenderSettings.ambientIntensity = enabled ? boostedIntensity : defaultIntensity;
         RenderSettings.ambientLight = enabled ? boostedColor : defaultColor;
         RenderSettings.fogEndDistance = enabled ? 50f : 25f;
@@ -48,10 +77,25 @@ public class NightVision : MonoBehaviour
 
     private IEnumerator AutoDisable()
     {
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(duration - .5f);
+
+        float time = 0f;
+        float normalizedTime = 0f;
+        while (time < .5f)
+        {
+            time += Time.deltaTime;
+            normalizedTime = time / .5f;
+
+            vignette.intensity = new ClampedFloatParameter(Mathf.Lerp(.5f, 0f, normalizedTime), 0f, 1f, true);
+            colorAdjustments.colorFilter = new ColorParameter(Color.Lerp(Color.green, Color.white, normalizedTime), true);
+            filmGrain.intensity = new ClampedFloatParameter(Mathf.Lerp(.5f, 0f, normalizedTime), 0f, 1f, true);
+            RenderSettings.ambientIntensity = Mathf.Lerp(boostedIntensity, defaultIntensity, normalizedTime);
+            RenderSettings.fogEndDistance = Mathf.Lerp(50f, 25f, normalizedTime);
+
+            yield return null;
+        }
 
         SetEnabled(false);
-
         StartCoroutine(Cooldown());
     }
 

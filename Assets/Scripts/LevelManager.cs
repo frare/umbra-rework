@@ -5,9 +5,13 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     public static LevelManager instance;
+    public static int pagesCollected { get { return instance.pagesCollectedCount; } }
 
     [SerializeField, ReadOnly] private int pagesTotalCount;
     [SerializeField, ReadOnly] private int pagesCollectedCount;
+
+    public delegate void OnPageCollected();
+    public static event OnPageCollected onPageCollected;
 
 
 
@@ -28,6 +32,7 @@ public class LevelManager : MonoBehaviour
     public static void PageCollected()
     {
         instance.pagesCollectedCount++;
+        onPageCollected?.Invoke();
 
         UIManager.UpdatePagesCount(instance.pagesCollectedCount, instance.pagesTotalCount);
 
