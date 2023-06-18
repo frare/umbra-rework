@@ -15,6 +15,8 @@ public class LevelManager : MonoBehaviour
     {
         instance = this;
 
+        List<Page> pages = new List<Page>(FindObjectsOfType<Page>());
+        while (pages.Count > 6) pages.RemoveAt(Random.Range(0, pages.Count - 1));
         pagesTotalCount = FindObjectsOfType<Page>().Length;
     }
 
