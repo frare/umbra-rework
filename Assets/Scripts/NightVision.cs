@@ -34,6 +34,7 @@ public class NightVision : MonoBehaviour
         volume.weight = enabled ? 1 : 0;
         RenderSettings.ambientIntensity = enabled ? boostedIntensity : defaultIntensity;
         RenderSettings.ambientLight = enabled ? boostedColor : defaultColor;
+        RenderSettings.fogEndDistance = enabled ? 50f : 25f;
 
         if (enabled) StartCoroutine(AutoDisable());
     }
