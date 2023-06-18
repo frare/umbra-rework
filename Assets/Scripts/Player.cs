@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     private static Player instance;
+    public static Vector3 position { get { return instance.transform.position; } private set { } }
 
     [Header("Player Attributes")]
     [SerializeField] private float moveSpeed = 2f;
@@ -34,6 +35,7 @@ public class Player : MonoBehaviour
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private CharacterController controller;
     [SerializeField] private InputManager input;
+    [SerializeField] private Transform flashlight;
     [SerializeField] private NightVision nightVision;
     private Transform mainCamera;
     private UnityEngine.UI.Image reticle;
