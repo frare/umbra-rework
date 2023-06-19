@@ -20,7 +20,12 @@ public class LevelManager : MonoBehaviour
         instance = this;
 
         List<Page> pages = new List<Page>(FindObjectsOfType<Page>());
-        while (pages.Count > 6) pages.RemoveAt(Random.Range(0, pages.Count - 1));
+        while (pages.Count > 6) 
+        {
+            int randomIndex = Random.Range(0, pages.Count - 1);
+            pages[randomIndex].gameObject.SetActive(false);
+            pages.RemoveAt(randomIndex);
+        }
         pagesTotalCount = FindObjectsOfType<Page>().Length;
     }
 
