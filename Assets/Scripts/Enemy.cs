@@ -9,9 +9,10 @@ public class Enemy : MonoBehaviour
     [SerializeField] private UnityEngine.Rendering.Volume postProcessVolume;
 
     private Coroutine fadeOutCoroutine;
+    private Coroutine stunCoroutine;
 
-    public delegate void OnFade();
-    public event OnFade onFade;
+    public delegate void OnFadeOut();
+    public event OnFadeOut onFadeOut;
 
 
 
@@ -52,8 +53,23 @@ public class Enemy : MonoBehaviour
             yield return null;
         }
 
-        onFade?.Invoke();
+        onFadeOut?.Invoke();
         fadeOutCoroutine = null;
         gameObject.SetActive(false);
+    }
+
+    public void Stun(float duration)
+    {
+        if (stunCoroutine != null) StopCoroutine(stunCoroutine);
+        stunCoroutine = StartCoroutine(StunCoroutine(duration));
+    }
+
+    private IEnumerator StunCoroutine(float duration)
+    {
+        navMeshAgent.isStopped = true;
+
+        yield return new WaitForSeconds(duration);
+
+        navMeshAgent.isStopped = false;
     }
 }

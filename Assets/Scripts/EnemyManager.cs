@@ -31,9 +31,9 @@ public class EnemyManager : MonoBehaviour
 
     private void Start()
     {
-        enemy.onFade += () => { canSpawn = true; };
+        enemy.onFadeOut += () => { canSpawn = true; };
         LevelManager.onPageCollected += () => { if (LevelManager.pagesCollected == 1) Spawn(); };
-        FindObjectOfType<NightVision>().onEnemyCaught += () => { enemy.FadeOut(); };
+        FindObjectOfType<NightVision>().onEnemyCaught += (float duration) => { enemy.Stun(duration); };
     }
 
     private void Update()
@@ -45,7 +45,6 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
-    [ContextMenu("Spawn")]
     private void Spawn()
     {
         spawnCurrentTime = 0f;

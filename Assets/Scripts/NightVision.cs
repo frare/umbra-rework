@@ -8,6 +8,7 @@ public class NightVision : MonoBehaviour
 {
     [SerializeField] private float duration;
     [SerializeField] private float cooldown;
+    [SerializeField] private float stunDuration;
     [SerializeField, ColorUsage(true, true)] private Color boostedColor;
     [SerializeField, Range(0f, 50f)] private int boostedIntensity;
 
@@ -21,7 +22,7 @@ public class NightVision : MonoBehaviour
     private ColorAdjustments colorAdjustments;
     private FilmGrain filmGrain;
 
-    public delegate void OnEnemyCaught();
+    public delegate void OnEnemyCaught(float duration);
     public event OnEnemyCaught onEnemyCaught;
 
 
@@ -49,7 +50,7 @@ public class NightVision : MonoBehaviour
             if (Physics.SphereCast(mainCamera.position, .5f, EnemyManager.position - mainCamera.position, out hit, 50f, 
                 1 << EnemyManager.layer | 1 << 7, QueryTriggerInteraction.Collide))
             {
-                if (hit.collider.gameObject.layer == EnemyManager.layer) onEnemyCaught?.Invoke();
+                if (hit.collider.gameObject.layer == EnemyManager.layer) onEnemyCaught?.Invoke(stunDuration);
             }
         }
     }
