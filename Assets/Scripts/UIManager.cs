@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private RectTransform reticle;
     [SerializeField] private TMP_Text pagesCount;
     [SerializeField] private float pagesCountFadeTime;
+    [SerializeField] private Image gameOverScreen;
 
     private Coroutine pagesCountFade;
 
@@ -58,6 +59,11 @@ public class UIManager : MonoBehaviour
     public static void SetReticleSize(bool interactable)
     {
         instance.reticle.sizeDelta = interactable ? reticleBigSize : reticleSmallSize;
+    }
+
+    public static void ShowGameOverScreen()
+    {
+        instance.gameOverScreen.gameObject.SetActive(true);
     }
 
     public void OnPressed_Exit()
