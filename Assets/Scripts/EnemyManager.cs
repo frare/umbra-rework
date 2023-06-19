@@ -60,7 +60,7 @@ public class EnemyManager : MonoBehaviour
         enemy.gameObject.SetActive(true);
 
         if (despawnCoroutine != null) StopCoroutine(despawnCoroutine);
-        StartCoroutine(Despawn());
+        despawnCoroutine = StartCoroutine(Despawn());
     }
 
     private IEnumerator Despawn()
