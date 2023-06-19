@@ -16,11 +16,6 @@ public class Enemy : MonoBehaviour
 
 
 
-    private void Awake()
-    {
-        gameObject.SetActive(false);
-    }
-
     private void OnEnable()
     {
         meshRenderer.material.color = Color.white;

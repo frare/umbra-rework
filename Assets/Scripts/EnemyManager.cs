@@ -55,6 +55,7 @@ public class EnemyManager : MonoBehaviour
         NavMeshHit hit;
         while (NavMesh.SamplePosition(randomDirection, out hit, spawnDistance, 1) == false);
 
+        if (enemy == null) enemy = FindObjectOfType<Enemy>(true);
         enemy.transform.position = hit.position;
         enemy.gameObject.SetActive(true);
 
