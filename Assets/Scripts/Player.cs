@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     private static Player instance;
+    public static int layer { get { return 8; } private set {  } }
     public static Vector3 position { get { return instance.transform.position; } private set { } }
 
     [Header("Player Attributes")]

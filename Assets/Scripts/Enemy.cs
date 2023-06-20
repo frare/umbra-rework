@@ -26,6 +26,14 @@ public class Enemy : MonoBehaviour
         navMeshAgent.destination = Player.position;
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == Player.layer && !LevelManager.isGameOver)
+        {
+            LevelManager.GameOver();
+        }
+    }
+
     public void FadeOut()
     {
         if (!gameObject.activeSelf) return;

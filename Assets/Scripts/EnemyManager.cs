@@ -23,8 +23,9 @@ public class EnemyManager : MonoBehaviour
 
     private void Awake()
     {
-        EnemyManager.instance = this;
-
+        if (EnemyManager.instance == null) EnemyManager.instance = this;
+        else Destroy(this.gameObject);
+        
         spawnCurrentTime = 0f;
         canSpawn = false;
     }

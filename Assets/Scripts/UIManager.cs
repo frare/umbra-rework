@@ -69,5 +69,14 @@ public class UIManager : MonoBehaviour
     public void OnPressed_Exit()
     {
         LoadingManager.LoadScene("01-Menu");
+
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+    public void OnPressed_Retry()
+    {
+        LevelManager.GameRestart();
+
+        Cursor.lockState = CursorLockMode.Locked;
     }
 }

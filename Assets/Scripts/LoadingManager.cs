@@ -41,8 +41,8 @@ public class LoadingManager : MonoBehaviour
 
     private void Update()
     {
-        minutesHandle.localEulerAngles += new Vector3(0f, 0f, minutesSpeed * (timeForward ? -1f : 1f) * Time.deltaTime);
-        hoursHandle.localEulerAngles += new Vector3(0f, 0f, hoursSpeed * (timeForward ? -1f : 1f) * Time.deltaTime);
+        minutesHandle.localEulerAngles += new Vector3(0f, 0f, minutesSpeed * (timeForward ? -1f : 1f) * Time.unscaledDeltaTime);
+        hoursHandle.localEulerAngles += new Vector3(0f, 0f, hoursSpeed * (timeForward ? -1f : 1f) * Time.unscaledDeltaTime);
     }
 
 
@@ -59,13 +59,13 @@ public class LoadingManager : MonoBehaviour
     private IEnumerator Coroutine_LoadScene(string sceneName)
     {
         SetVisibility(true);
-        yield return new WaitForSeconds(slideTime);
+        yield return new WaitForSecondsRealtime(slideTime);
 
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
         while (!asyncLoad.isDone) yield return null;
 
-        yield return new WaitForSeconds(minDuration);
-        yield return new WaitForSeconds(slideTime);
+        yield return new WaitForSecondsRealtime(minDuration);
+        yield return new WaitForSecondsRealtime(slideTime);
         SetVisibility(false);
     }
 
@@ -93,7 +93,7 @@ public class LoadingManager : MonoBehaviour
         Vector2 targetPosition = active ? Vector2.zero : new Vector2(canvas.rect.width, 0);
         while (time < slideTime)
         {
-            time += Time.deltaTime;
+            time += Time.unscaledDeltaTime;
             panel.anchoredPosition = Vector2.Lerp(initialPosition, targetPosition, time / slideTime);
             yield return null;
         }
