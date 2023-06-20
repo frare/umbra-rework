@@ -42,6 +42,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3320853016259269796}
   - component: {fileID: 4959763513147177092}
+  - component: {fileID: 8909842140866598385}
+  - component: {fileID: 9098241984054472479}
   m_Layer: 11
   m_Name: Minimap Sprite
   m_TagString: Untagged
@@ -116,6 +118,35 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!65 &8909842140866598385
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5835161062859483444}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.1199994, y: 5.1200013, z: 2}
+  m_Center: {x: 0, y: 0, z: -1}
+--- !u!208 &9098241984054472479
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5835161062859483444}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 2.5600002, y: 2.5600002, z: 1}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: -1}
+  m_TimeToStationary: 0.5
 --- !u!1 &7905203042258979828
 GameObject:
   m_ObjectHideFlags: 0
@@ -126,6 +157,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7387745512934694781}
   - component: {fileID: 2875891647343425429}
+  - component: {fileID: 2429244604366220865}
+  - component: {fileID: 559323611897078781}
   m_Layer: 11
   m_Name: Minimap Sprite (1)
   m_TagString: Untagged
@@ -200,6 +233,35 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!65 &2429244604366220865
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7905203042258979828}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.1199994, y: 5.1200013, z: 2}
+  m_Center: {x: 0, y: 0, z: -1}
+--- !u!208 &559323611897078781
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7905203042258979828}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 2.5600002, y: 2.5600002, z: 1}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: -1}
+  m_TimeToStationary: 0.5
 --- !u!1001 &1926601776413919137
 PrefabInstance:
   m_ObjectHideFlags: 0
