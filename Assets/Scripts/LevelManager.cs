@@ -46,15 +46,22 @@ public class LevelManager : MonoBehaviour
         UIManager.UpdatePagesCount(instance.pagesCollectedCount, instance.pagesTotalCount);
 
         if (instance.pagesCollectedCount >= instance.pagesTotalCount)
-            Debug.Log("All pages collected");
+        {
+            GameWin();
+        }            
+    }
+
+    private static void GameWin()
+    {
+        Time.timeScale = 0f;
+        UIManager.ShowGameWinScreen();
+        Cursor.lockState = CursorLockMode.None;
     }
 
     public static void GameOver()
     {
         Time.timeScale = 0f;
-
         UIManager.ShowGameOverScreen(); 
-
         Cursor.lockState = CursorLockMode.None;
     }
 

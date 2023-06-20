@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text pagesCount;
     [SerializeField] private float pagesCountFadeTime;
     [SerializeField] private Image gameOverScreen;
+    [SerializeField] private Image gameWinScreen;
 
     private Coroutine pagesCountFade;
 
@@ -64,6 +65,11 @@ public class UIManager : MonoBehaviour
     public static void ShowGameOverScreen()
     {
         instance.gameOverScreen.gameObject.SetActive(true);
+    }
+
+    public static void ShowGameWinScreen()
+    {
+        instance.gameWinScreen.gameObject.SetActive(true);
     }
 
     public void OnPressed_Exit()
