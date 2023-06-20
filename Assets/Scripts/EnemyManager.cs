@@ -17,22 +17,22 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private Enemy enemy;
     private float spawnCurrentTime;
     private float spawnTargetTime;
-    private Coroutine despawnCoroutine;
+    private float despawnCurrentTime;
 
 
 
     private void Awake()
     {
-        if (EnemyManager.instance == null) EnemyManager.instance = this;
-        else Destroy(this.gameObject);
+        EnemyManager.instance = this;
         
         spawnCurrentTime = 0f;
+        despawnCurrentTime = 0f;
         canSpawn = false;
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        enemy.onFadeOut += () => { canSpawn = true; };
+        enemy.onFadeOut += () => { canSpawn = true; despawnCurrentTime = 0f; };
         LevelManager.onPageCollected += () => { if (LevelManager.pagesCollected == 1) Spawn(); };
         FindObjectOfType<NightVision>().onEnemyCaught += (float duration) => { enemy.Stun(duration); };
     }
@@ -43,6 +43,11 @@ public class EnemyManager : MonoBehaviour
         {
             if (spawnCurrentTime < spawnTargetTime) { spawnCurrentTime += Time.deltaTime; }
             else { Spawn(); }
+        }
+        else
+        {
+            if (despawnCurrentTime < despawnTime[LevelManager.pagesCollected]) { despawnCurrentTime += Time.deltaTime; }
+            else { enemy.FadeOut(); }
         }
     }
 
@@ -59,16 +64,6 @@ public class EnemyManager : MonoBehaviour
         if (enemy == null) enemy = FindObjectOfType<Enemy>(true);
         enemy.transform.position = hit.position;
         enemy.gameObject.SetActive(true);
-
-        if (despawnCoroutine != null) StopCoroutine(despawnCoroutine);
-        despawnCoroutine = StartCoroutine(Despawn());
-    }
-
-    private IEnumerator Despawn()
-    {
-        yield return new WaitForSeconds(despawnTime[LevelManager.pagesCollected]);
-
-        enemy.FadeOut();
     }
 
     private float GenerateRandomSpawnTime()

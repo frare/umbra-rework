@@ -19,11 +19,13 @@ public class Enemy : MonoBehaviour
     private void OnEnable()
     {
         meshRenderer.material.color = Color.white;
+        navMeshAgent.isStopped = false;
+        // navMeshAgent.SetDestination(Vector3.zero);
     }
 
     private void Update()
     {
-        navMeshAgent.destination = Player.position;
+        navMeshAgent.SetDestination(Player.instance.transform.position);
     }
 
     private void OnTriggerEnter(Collider other)
