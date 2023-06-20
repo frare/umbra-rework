@@ -21,6 +21,7 @@ public class LevelManager : MonoBehaviour
         instance = this;
 
         Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.Locked;
 
         List<Page> pages = new List<Page>(FindObjectsOfType<Page>());
         while (pages.Count > 6) 
