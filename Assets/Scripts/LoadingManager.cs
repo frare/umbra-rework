@@ -29,9 +29,12 @@ public class LoadingManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null ) instance = this;
+        if (instance == null) 
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
         else Destroy(this.gameObject);
-        DontDestroyOnLoad(gameObject);
 
         canvas.gameObject.SetActive(true);
         panel.anchoredPosition = new Vector2(canvas.rect.width, 0f);
@@ -79,9 +82,6 @@ public class LoadingManager : MonoBehaviour
 
         if (coroutineSlide != null) StopCoroutine(coroutineSlide);
         coroutineSlide = StartCoroutine(Coroutine_SetActive(active));
-
-        instance.enabled = active;
-        isLoading = active;
     }
 
     private IEnumerator Coroutine_SetActive(bool active)
@@ -100,5 +100,7 @@ public class LoadingManager : MonoBehaviour
         panel.anchoredPosition = targetPosition;
 
         if (!active) canvas.gameObject.SetActive(false);
+        this.enabled = active;
+        isLoading = active;
     }
 }
