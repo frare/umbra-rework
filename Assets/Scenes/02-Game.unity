@@ -78426,6 +78426,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 7588067592298380708, guid: e96567eaee6d44c40811e81753d98415,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7588067592852343741, guid: e96567eaee6d44c40811e81753d98415,
         type: 3}
       propertyPath: blendDistance
