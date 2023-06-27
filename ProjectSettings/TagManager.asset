@@ -21,7 +21,7 @@ TagManager:
   - Page
   - Enemy
   - PlayerWall
-  - 
+  - Render
   - 
   - 
   - 
@@ -41,4 +41,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: RenderUI
+    uniqueID: 2979387583
     locked: 0
