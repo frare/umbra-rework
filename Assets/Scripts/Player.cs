@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private float sprintSpeed = 5f;
     [SerializeField] private float rotationSmoothTime = 0.12f;
+    [SerializeField] private float rotationSpeed = 1f;
     [SerializeField] private float acceleration = 10f;
     [SerializeField] private float interactDistance = 2.5f;
     private float speed;
@@ -72,48 +73,53 @@ public class Player : MonoBehaviour
 
     
 
+    private void CameraRotation()
+    {
+        if (input.look.sqrMagnitude >= threshold)
+        {
+            float deltaTimeMultiplier = isCurrentDeviceMouse ? 1.0f : Time.deltaTime;
+            
+            cinemachineTargetPitch += input.look.y * rotationSpeed * deltaTimeMultiplier;
+            rotationVelocity = input.look.x * rotationSpeed * deltaTimeMultiplier;
+
+            cinemachineTargetPitch = ClampAngle(cinemachineTargetPitch, cameraBottomClamp, cameraTopClamp);
+
+            cinemachineCameraTarget.transform.localRotation = Quaternion.Euler(cinemachineTargetPitch, 0.0f, 0.0f);
+
+            transform.Rotate(Vector3.up * rotationVelocity);
+        }
+    }
+
     private void Move()
     {
-        float targetSpeed = input.move == Vector2.zero ? 0f : (input.sprint ? sprintSpeed : moveSpeed);
-        float currentHorizontalSpeed = new Vector3(controller.velocity.x, 0f, controller.velocity.z).magnitude;
+        float targetSpeed = input.sprint ? sprintSpeed : moveSpeed;
+
+        if (input.move == Vector2.zero) targetSpeed = 0.0f;
+
+        float currentHorizontalSpeed = new Vector3(controller.velocity.x, 0.0f, controller.velocity.z).magnitude;
+
+        float speedOffset = 0.1f;
         float inputMagnitude = input.analogMovement ? input.move.magnitude : 1f;
 
         if (currentHorizontalSpeed < targetSpeed - speedOffset || currentHorizontalSpeed > targetSpeed + speedOffset)
         {
             speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude, Time.deltaTime * acceleration);
+
             speed = Mathf.Round(speed * 1000f) / 1000f;
         }
-        else speed = targetSpeed;
+        else
+        {
+            speed = targetSpeed;
+        }
 
-        Vector3 inputDirection = new Vector3(input.move.x, 0f, input.move.y).normalized;
+        Vector3 inputDirection = new Vector3(input.move.x, 0.0f, input.move.y).normalized;
+
         if (input.move != Vector2.zero)
         {
-            targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + mainCamera.eulerAngles.y;
-            float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref rotationVelocity, rotationSmoothTime);
-
-            transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+            inputDirection = transform.right * input.move.x + transform.forward * input.move.y;
         }
 
-        Vector3 targetDirection = (Quaternion.Euler(0f, targetRotation, 0f) * Vector3.forward).normalized;
-
-        controller.Move(targetDirection * speed * Time.deltaTime + new Vector3(0f, verticalVelocity, 0f) * Time.deltaTime);
-    }
-
-    private void CameraRotation()
-    {
-        if (input.look.sqrMagnitude >= threshold && !cameraLockRotation)
-        {
-            float deltaTimeMultiplier = isCurrentDeviceMouse ? 1.0f : Time.deltaTime;
-
-            cinemachineTargetYaw += input.look.x * deltaTimeMultiplier;
-            cinemachineTargetPitch += input.look.y * deltaTimeMultiplier;
-        }
-
-        cinemachineTargetYaw = ClampAngle(cinemachineTargetYaw, float.MinValue, float.MaxValue);
-        cinemachineTargetPitch = ClampAngle(cinemachineTargetPitch, cameraBottomClamp, cameraTopClamp);
-
-        cinemachineCameraTarget.rotation = 
-            Quaternion.Euler(cinemachineTargetPitch + cameraAngleOverride, cinemachineTargetYaw, 0.0f);
+        controller.Move(inputDirection.normalized * (speed * Time.deltaTime) + new Vector3(0.0f, verticalVelocity, 0.0f) * Time.deltaTime);
     }
 
     private void TryInteract()
