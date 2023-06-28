@@ -6,16 +6,20 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour
 {
     public enum NavigationState { NONE, Wander, Chase };
-    private NavigationState currentState = NavigationState.NONE;
+
+    // Properties
+    public bool isMoving { get { return navMeshAgent.velocity.sqrMagnitude > 0f; } }
+    public bool isChasing { get { return currentState == NavigationState.Chase; } }
 
     // Attributes
+    [SerializeField] private NavigationState currentState = NavigationState.NONE;
     [SerializeField] private float wanderDistance;
     [SerializeField] private float wanderSpeed;
     [SerializeField] private float wanderRetargetTime;
 
-    // Components
+    // References
     private NavMeshAgent navMeshAgent;
-    private MeshRenderer meshRenderer;
+    private new Renderer renderer;
     private UnityEngine.Rendering.Volume postProcessVolume;
 
     private Coroutine wanderCoroutine;
@@ -25,17 +29,17 @@ public class Enemy : MonoBehaviour
     // Unity callbacks
     private void OnValidate()
     {
-        if (navMeshAgent == null) navMeshAgent = GetComponentInChildren<NavMeshAgent>(true);
-        if (meshRenderer == null) meshRenderer = GetComponentInChildren<MeshRenderer>(true);
-        if (postProcessVolume == null) postProcessVolume = GetComponentInChildren<UnityEngine.Rendering.Volume>(true);
+        navMeshAgent = GetComponentInChildren<NavMeshAgent>(true);
+        renderer = GetComponentInChildren<Renderer>(true);
+        postProcessVolume = GetComponentInChildren<UnityEngine.Rendering.Volume>(true);
     }
 
     private void OnEnable()
     {
-        meshRenderer.material.color = Color.white;
+        renderer.material.color = Color.white;
         navMeshAgent.isStopped = false;
 
-        ChangeState(NavigationState.Wander);
+        ChangeState(currentState);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -60,6 +64,7 @@ public class Enemy : MonoBehaviour
 
             case NavigationState.Wander:
             navMeshAgent.autoBraking = true;
+            navMeshAgent.speed = wanderSpeed;
             Wander();
             break;
 
@@ -119,7 +124,7 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator FadeOutCoroutine()
     {
-        Material material = meshRenderer.material;
+        Material material = renderer.material;
         Color colorStart = material.color;
         float time = 0f;
         while (time < 1f)
