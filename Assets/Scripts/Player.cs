@@ -125,7 +125,7 @@ public class Player : MonoBehaviour
 
     private void Sprint()
     {
-        if (Input.GetKeyDown(KeyCode.F1)) sprintEnergy = sprintDuration;
+        // if (Input.GetKeyDown(KeyCode.F1)) sprintEnergy = sprintDuration;
 
         if (isSprinting) 
         {
