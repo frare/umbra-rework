@@ -6,33 +6,40 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour
 {
     public enum NavigationState { NONE, Wander, Chase };
-    private NavigationState currentState = NavigationState.NONE;
 
+    // Properties
+    public bool isMoving { get { return navMeshAgent.velocity.sqrMagnitude > 0f; } }
+    public bool isChasing { get { return currentState == NavigationState.Chase; } }
+
+    // Attributes
+    [SerializeField] private NavigationState currentState = NavigationState.NONE;
     [SerializeField] private float wanderDistance;
     [SerializeField] private float wanderSpeed;
     [SerializeField] private float wanderRetargetTime;
 
+    // References
+    private NavMeshAgent navMeshAgent;
+    private new Renderer renderer;
+    private UnityEngine.Rendering.Volume postProcessVolume;
+
     private Coroutine wanderCoroutine;
 
-    [Space(15)]
-    [SerializeField] private UnityEngine.AI.NavMeshAgent navMeshAgent;
-    [SerializeField] private MeshRenderer meshRenderer;
-    [SerializeField] private UnityEngine.Rendering.Volume postProcessVolume;
-
-    // old stuff
-    private Coroutine fadeOutCoroutine;
-    private Coroutine stunCoroutine;
-    public delegate void OnFadeOut();
-    public event OnFadeOut onFadeOut;
 
 
+    // Unity callbacks
+    private void OnValidate()
+    {
+        navMeshAgent = GetComponentInChildren<NavMeshAgent>(true);
+        renderer = GetComponentInChildren<Renderer>(true);
+        postProcessVolume = GetComponentInChildren<UnityEngine.Rendering.Volume>(true);
+    }
 
     private void OnEnable()
     {
-        meshRenderer.material.color = Color.white;
+        renderer.material.color = Color.white;
         navMeshAgent.isStopped = false;
 
-        ChangeState(NavigationState.Wander);
+        ChangeState(currentState);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -44,9 +51,7 @@ public class Enemy : MonoBehaviour
     }
 
 
-
-
-    // NEW STUFF 👇
+    // Class methods
     public void ChangeState(NavigationState targetState)
     {
         currentState = targetState;
@@ -54,15 +59,18 @@ public class Enemy : MonoBehaviour
         switch (currentState)
         {
             case NavigationState.NONE:
+            navMeshAgent.destination = transform.position;
             break;
 
             case NavigationState.Wander:
             navMeshAgent.autoBraking = true;
+            navMeshAgent.speed = wanderSpeed;
             Wander();
             break;
 
             case NavigationState.Chase:
             navMeshAgent.autoBraking = false;
+            Chase();
             break;
         }
     }
@@ -93,9 +101,19 @@ public class Enemy : MonoBehaviour
         
         Wander();
     }
-    // NEW STUFF 👆
+
+    private void Chase()
+    {
+
+    }
 
 
+
+    // old stuff 👇👇👇
+    private Coroutine fadeOutCoroutine;
+    private Coroutine stunCoroutine;
+    public delegate void OnFadeOut();
+    public event OnFadeOut onFadeOut;
 
     public void FadeOut()
     {
@@ -106,7 +124,7 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator FadeOutCoroutine()
     {
-        Material material = meshRenderer.material;
+        Material material = renderer.material;
         Color colorStart = material.color;
         float time = 0f;
         while (time < 1f)
