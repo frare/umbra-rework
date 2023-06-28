@@ -8,24 +8,27 @@ public class Enemy : MonoBehaviour
     public enum NavigationState { NONE, Wander, Chase };
     private NavigationState currentState = NavigationState.NONE;
 
+    // Attributes
     [SerializeField] private float wanderDistance;
     [SerializeField] private float wanderSpeed;
     [SerializeField] private float wanderRetargetTime;
 
+    // Components
+    private NavMeshAgent navMeshAgent;
+    private MeshRenderer meshRenderer;
+    private UnityEngine.Rendering.Volume postProcessVolume;
+
     private Coroutine wanderCoroutine;
 
-    [Space(15)]
-    [SerializeField] private UnityEngine.AI.NavMeshAgent navMeshAgent;
-    [SerializeField] private MeshRenderer meshRenderer;
-    [SerializeField] private UnityEngine.Rendering.Volume postProcessVolume;
-
-    // old stuff
-    private Coroutine fadeOutCoroutine;
-    private Coroutine stunCoroutine;
-    public delegate void OnFadeOut();
-    public event OnFadeOut onFadeOut;
 
 
+    // Unity callbacks
+    private void OnValidate()
+    {
+        if (navMeshAgent == null) navMeshAgent = GetComponentInChildren<NavMeshAgent>(true);
+        if (meshRenderer == null) meshRenderer = GetComponentInChildren<MeshRenderer>(true);
+        if (postProcessVolume == null) postProcessVolume = GetComponentInChildren<UnityEngine.Rendering.Volume>(true);
+    }
 
     private void OnEnable()
     {
@@ -44,9 +47,7 @@ public class Enemy : MonoBehaviour
     }
 
 
-
-
-    // NEW STUFF 👇
+    // Class methods
     public void ChangeState(NavigationState targetState)
     {
         currentState = targetState;
@@ -54,6 +55,7 @@ public class Enemy : MonoBehaviour
         switch (currentState)
         {
             case NavigationState.NONE:
+            navMeshAgent.destination = transform.position;
             break;
 
             case NavigationState.Wander:
@@ -63,6 +65,7 @@ public class Enemy : MonoBehaviour
 
             case NavigationState.Chase:
             navMeshAgent.autoBraking = false;
+            Chase();
             break;
         }
     }
@@ -93,9 +96,19 @@ public class Enemy : MonoBehaviour
         
         Wander();
     }
-    // NEW STUFF 👆
+
+    private void Chase()
+    {
+
+    }
 
 
+
+    // old stuff 👇👇👇
+    private Coroutine fadeOutCoroutine;
+    private Coroutine stunCoroutine;
+    public delegate void OnFadeOut();
+    public event OnFadeOut onFadeOut;
 
     public void FadeOut()
     {
