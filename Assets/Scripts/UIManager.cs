@@ -29,6 +29,8 @@ public class UIManager : MonoBehaviour
 
     public static void UpdateVisorCooldown(float normalizedTime)
     {
+        if (instance == null) return;
+
         instance.visorCooldown.fillAmount = normalizedTime;
     }
 
@@ -60,11 +62,15 @@ public class UIManager : MonoBehaviour
     private static Vector2 reticleSmallSize = new Vector2(25, 25);
     public static void SetReticleSize(bool interactable)
     {
+        if (instance == null) return;
+
         instance.reticle.sizeDelta = interactable ? reticleBigSize : reticleSmallSize;
     }
 
     public static void UpdateSprintBar(float normalizedAmount)
     {
+        if (instance == null) return;
+
         instance.sprintBar.fillAmount = normalizedAmount;
     }
 
