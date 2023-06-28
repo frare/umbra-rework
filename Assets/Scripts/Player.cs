@@ -6,19 +6,24 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     public static Player instance;
-    public static int layer { get { return 8; } private set {  } }
-    public static Vector3 position { get { return instance.transform.position; } private set { } }
+    public static int layer { get { return 8; } }
+    public static Vector3 position { get { return instance.transform.position; } }
 
     [Header("Player Attributes")]
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private float sprintSpeed = 5f;
-    [SerializeField] private float rotationSmoothTime = 0.12f;
+    [SerializeField] private float sprintDuration = 1f;
+    [SerializeField] private float sprintRechargeDelay;
+    [SerializeField] private float sprintRechargeSpeed;
     [SerializeField] private float rotationSpeed = 1f;
     [SerializeField] private float acceleration = 10f;
     [SerializeField] private float interactDistance = 2.5f;
     private float speed;
     private const float speedOffset = 0.1f;
-    private float targetRotation = 0f;
+    private float sprintEnergy;
+    private float sprintCurrentRecharge;
+    private bool canSprint { get { return sprintEnergy > 0f; } }
+    private bool isSprinting { get { return input.sprint && canSprint; } }
     private float rotationVelocity;
     private float verticalVelocity;
 
@@ -26,8 +31,6 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform cinemachineCameraTarget;
     [SerializeField] private float cameraTopClamp = 70f;
     [SerializeField] private float cameraBottomClamp = -30f;
-    [SerializeField] private float cameraAngleOverride = 0f;
-    [SerializeField] private bool cameraLockRotation = false;
     private float cinemachineTargetYaw;
     private float cinemachineTargetPitch;
     private const float threshold = 0.01f;
@@ -58,6 +61,8 @@ public class Player : MonoBehaviour
         input.onInteractPressed += TryInteract;
 
         mainCamera = Camera.main.transform;
+
+        sprintEnergy = sprintDuration;
     }
 
     private void Update()
@@ -92,12 +97,12 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
-        float targetSpeed = input.sprint ? sprintSpeed : moveSpeed;
+        Sprint();
 
+        float targetSpeed = isSprinting ? sprintSpeed : moveSpeed;
         if (input.move == Vector2.zero) targetSpeed = 0.0f;
 
         float currentHorizontalSpeed = new Vector3(controller.velocity.x, 0.0f, controller.velocity.z).magnitude;
-
         float speedOffset = 0.1f;
         float inputMagnitude = input.analogMovement ? input.move.magnitude : 1f;
 
@@ -107,19 +112,32 @@ public class Player : MonoBehaviour
 
             speed = Mathf.Round(speed * 1000f) / 1000f;
         }
-        else
-        {
-            speed = targetSpeed;
-        }
+        else speed = targetSpeed;
 
         Vector3 inputDirection = new Vector3(input.move.x, 0.0f, input.move.y).normalized;
-
         if (input.move != Vector2.zero)
         {
             inputDirection = transform.right * input.move.x + transform.forward * input.move.y;
         }
 
         controller.Move(inputDirection.normalized * (speed * Time.deltaTime) + new Vector3(0.0f, verticalVelocity, 0.0f) * Time.deltaTime);
+    }
+
+    private void Sprint()
+    {
+        if (Input.GetKeyDown(KeyCode.F1)) sprintEnergy = sprintDuration;
+
+        if (isSprinting) 
+        {
+            sprintEnergy -= Time.deltaTime;
+            sprintCurrentRecharge = 0f;
+        }
+        else sprintCurrentRecharge += Time.deltaTime;
+
+        if (sprintCurrentRecharge >= sprintRechargeDelay && sprintEnergy < sprintDuration) 
+            sprintEnergy += Time.deltaTime * sprintRechargeSpeed;
+
+        UIManager.UpdateSprintBar(sprintEnergy / sprintDuration);
     }
 
     private void TryInteract()

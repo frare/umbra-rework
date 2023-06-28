@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private RectTransform reticle;
     [SerializeField] private TMP_Text pagesCount;
     [SerializeField] private float pagesCountFadeTime;
+    [SerializeField] private Image sprintBar;
     [SerializeField] private Image gameOverScreen;
     [SerializeField] private Image gameWinScreen;
 
@@ -60,6 +61,11 @@ public class UIManager : MonoBehaviour
     public static void SetReticleSize(bool interactable)
     {
         instance.reticle.sizeDelta = interactable ? reticleBigSize : reticleSmallSize;
+    }
+
+    public static void UpdateSprintBar(float normalizedAmount)
+    {
+        instance.sprintBar.fillAmount = normalizedAmount;
     }
 
     public static void ShowGameOverScreen()
