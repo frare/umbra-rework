@@ -63,3 +63,4 @@ crashlytics-build.properties
 
 # Settings files that keep showing as modified but with no changes
 ProjectSettings/Packages/com.unity.probuilder/Settings.json
+ProjectSettings/Packages/com.unity.testtools.codecoverage/Settings.json
