@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Player : Singleton<Player>
 {
+    // Static fields
     public static int layer { get { return 8; } }
     public static Vector3 position { get { return instance.transform.position; } }
     public static bool grabbed { get; private set; }
@@ -17,6 +18,7 @@ public class Player : Singleton<Player>
     [SerializeField] private float sprintRechargeSpeed;
     [SerializeField] private float rotationSpeed = 1f;
     [SerializeField] private float acceleration = 10f;
+    [SerializeField] private float gravity;
     [SerializeField] private float interactDistance = 2.5f;
     private float speed;
     private const float speedOffset = 0.1f;
@@ -50,6 +52,7 @@ public class Player : Singleton<Player>
 
 
  
+    // Unity callbacks
     private void Start()
     {
         cinemachineTargetYaw = cinemachineCameraTarget.eulerAngles.y;
@@ -65,6 +68,7 @@ public class Player : Singleton<Player>
     private void Update()
     {
         Move();
+        Gravity();
         UpdateReticle();
     }
 
@@ -75,23 +79,9 @@ public class Player : Singleton<Player>
 
     
 
-    private void CameraRotation()
-    {
-        if (input.look.sqrMagnitude >= threshold)
-        {
-            float deltaTimeMultiplier = isCurrentDeviceMouse ? 1.0f : Time.deltaTime;
-            
-            cinemachineTargetPitch += input.look.y * rotationSpeed * deltaTimeMultiplier;
-            rotationVelocity = input.look.x * rotationSpeed * deltaTimeMultiplier;
 
-            cinemachineTargetPitch = ClampAngle(cinemachineTargetPitch, cameraBottomClamp, cameraTopClamp);
 
-            cinemachineCameraTarget.transform.localRotation = Quaternion.Euler(cinemachineTargetPitch, 0.0f, 0.0f);
-
-            transform.Rotate(Vector3.up * rotationVelocity);
-        }
-    }
-
+    // Class methods
     private void Move()
     {
         Sprint();
@@ -150,6 +140,11 @@ public class Player : Singleton<Player>
         }
     }
 
+    private void Gravity()
+    {
+        verticalVelocity += gravity * Time.deltaTime;
+    }
+
     private void UpdateReticle()
     {
         if (Physics.Raycast(mainCamera.position, mainCamera.forward, out reticleHit, Mathf.Infinity, 1 << Collectible.layer, QueryTriggerInteraction.Collide))
@@ -163,6 +158,23 @@ public class Player : Singleton<Player>
         }
         
         UIManager.SetReticleSize(false);
+    }
+
+    private void CameraRotation()
+    {
+        if (input.look.sqrMagnitude >= threshold)
+        {
+            float deltaTimeMultiplier = isCurrentDeviceMouse ? 1.0f : Time.deltaTime;
+            
+            cinemachineTargetPitch += input.look.y * rotationSpeed * deltaTimeMultiplier;
+            rotationVelocity = input.look.x * rotationSpeed * deltaTimeMultiplier;
+
+            cinemachineTargetPitch = ClampAngle(cinemachineTargetPitch, cameraBottomClamp, cameraTopClamp);
+
+            cinemachineCameraTarget.transform.localRotation = Quaternion.Euler(cinemachineTargetPitch, 0.0f, 0.0f);
+
+            transform.Rotate(Vector3.up * rotationVelocity);
+        }
     }
 
     private static float ClampAngle(float angle, float min, float max)
