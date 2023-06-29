@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
+public class Player : Singleton<Player>
 {
-    public static Player instance;
     public static int layer { get { return 8; } }
     public static Vector3 position { get { return instance.transform.position; } }
     public static bool grabbed { get; private set; }
@@ -49,11 +48,8 @@ public class Player : MonoBehaviour
 
 
 
-    private void Awake()
-    {
-        Player.instance = this;
-    }
 
+ 
     private void Start()
     {
         cinemachineTargetYaw = cinemachineCameraTarget.eulerAngles.y;

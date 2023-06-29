@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Singleton<Enemy>
 {
     // Static fields
-    private static Enemy instance;
     public static int layer { get { return 13;} }
     public static Vector3 position { get { return instance.transform.position; } }
 
@@ -41,11 +40,6 @@ public class Enemy : MonoBehaviour
         navMeshAgent = GetComponentInChildren<NavMeshAgent>(true);
         renderer = GetComponentInChildren<Renderer>(true);
         postProcessVolume = GetComponentInChildren<UnityEngine.Rendering.Volume>(true);
-    }
-
-    private void Awake()
-    {
-        Enemy.instance = this;
     }
 
     private void OnEnable()
