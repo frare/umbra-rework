@@ -1,30 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class EnemyAnimator : MonoBehaviour
 {
     private Enemy enemyBehaviour;
-    private Animator animator;
     private Transform mainCam;
+    private Animator animator;
 
 
 
-    private void OnEnable()
-    {
-        // could help solve the issue with animating the a mesh instead of sprite
-        // GetComponentInChildren<SpriteRenderer>().RegisterSpriteChangeCallback(OnSpriteChanged);
-    }
 
     private void OnValidate()
     {
         enemyBehaviour = GetComponent<Enemy>();
-        animator = GetComponentInChildren<Animator>(true);
         mainCam = Camera.main?.transform;
+        animator = GetComponentInChildren<Animator>(true);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         bool isFacingCamera = Vector3.Dot(mainCam.forward, transform.forward) < 0f;
         animator.SetLayerWeight(0, isFacingCamera ? 1f : 0f);
