@@ -4862,11 +4862,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23d9df01307f21249a1f0ac8f23628b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentState: 1
+  currentState: 2
   wanderSpeed: 3
   wanderDistance: 20
   wanderRetargetTime: 3
-  chaseSpeed: 5
+  chaseSpeed: 10
   chaseGiveupTime: 0
 --- !u!114 &2944818733884056920
 MonoBehaviour:
