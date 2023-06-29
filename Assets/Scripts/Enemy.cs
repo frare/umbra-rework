@@ -5,26 +5,33 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
+    // Static fields
+    private static Enemy instance;
+    public static int layer { get { return 13;} }
+    public static Vector3 position { get { return instance.transform.position; } }
+
     public enum NavigationState { NONE, Wander, Chase };
 
     // Properties
     public bool isMoving { get { return navMeshAgent.velocity.sqrMagnitude > 0f; } }
     public bool isChasing { get { return currentState == NavigationState.Chase; } }
 
-    // Attributes
-    [SerializeField] private NavigationState currentState = NavigationState.NONE;
+    // Inspector attributes
+    [SerializeField] private NavigationState currentState;
     [SerializeField] private float wanderSpeed;
     [SerializeField] private float wanderDistance;
     [SerializeField] private float wanderRetargetTime;
     [SerializeField] private float chaseSpeed;
-    [SerializeField] private float chaseDurationWithoutLOS;
+    [SerializeField] private float chaseGiveupTime;
 
-    // References
+    // Other components
     private NavMeshAgent navMeshAgent;
     private new Renderer renderer;
     private UnityEngine.Rendering.Volume postProcessVolume;
 
     private Coroutine wanderCoroutine;
+
+
 
 
 
@@ -36,21 +43,26 @@ public class Enemy : MonoBehaviour
         postProcessVolume = GetComponentInChildren<UnityEngine.Rendering.Volume>(true);
     }
 
+    private void Awake()
+    {
+        Enemy.instance = this;
+    }
+
     private void OnEnable()
     {
         renderer.material.color = Color.white;
         navMeshAgent.isStopped = false;
 
-        ChangeState(currentState);
+        SetNavigationState(currentState);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == Player.layer && !LevelManager.isGameOver)
         {
-            LevelManager.GameOver();
+            GrabPlayer();
 
-            // change to jumpscare, then gameover
+            // LevelManager.GameLose();
         }
     }
 
@@ -60,9 +72,13 @@ public class Enemy : MonoBehaviour
     }
 
 
+
+
+
     // Class methods
-    public void ChangeState(NavigationState targetState)
+    public void SetNavigationState(NavigationState targetState)
     {
+        // eventually should probably change so that each navigation state have its own behaviour
         NavigationState previousState = currentState;
         currentState = targetState;
 
@@ -89,16 +105,15 @@ public class Enemy : MonoBehaviour
     private void Wander()
     {
         Vector3 randomDirection = Random.insideUnitSphere * wanderDistance;
-        randomDirection += Player.position;
         
         NavMeshHit navHit;
-        NavMesh.SamplePosition(randomDirection, out navHit, wanderDistance, 1);
+        NavMesh.SamplePosition(randomDirection + Player.position, out navHit, wanderDistance, 1);
         navMeshAgent.destination = navHit.position;
 
-        wanderCoroutine = StartCoroutine(WanderCoroutine());
+        wanderCoroutine = StartCoroutine(Wander_GetNextDestination());
     }
 
-    private IEnumerator WanderCoroutine()
+    private IEnumerator Wander_GetNextDestination()
     {
         float time = 0f;
         while (time < 30f)
@@ -115,13 +130,26 @@ public class Enemy : MonoBehaviour
 
     private void Chase()
     {
-        // stops moving,
-        // do jumpscare,
+        // stops moving, do a jumpscare,
         // then starts chasing
 
         // should check if player is in line of sight for X seconds,
         // if not, returns to wandering
     }
+
+    private void GrabPlayer()
+    {
+        if (Player.grabbed == false) return;
+
+        // should this actor be in control of the action?
+        // or just notify it?
+
+        // in any case, the player loses control of their character,
+        // gets pulled up, being held by the monster hand, looking at its face,
+        // and then dies
+    }
+
+
 
 
 

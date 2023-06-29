@@ -13,7 +13,7 @@ TagManager:
   - Water
   - UI
   - 
-  - Solid
+  - Geometry
   - Player
   - Ground
   - PostProcessing
@@ -21,7 +21,7 @@ TagManager:
   - Collectible
   - Enemy
   - PlayerWall
-  - Render
+  - RenderTexture
   - 
   - 
   - 

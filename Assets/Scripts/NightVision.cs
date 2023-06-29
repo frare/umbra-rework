@@ -16,8 +16,8 @@ public class NightVision : MonoBehaviour
     private bool inCooldown;
     private Color defaultColor;
     private float defaultIntensity;
-    private Volume volume;
     private Transform mainCamera;
+    private Volume volume;
     private Vignette vignette;
     private ColorAdjustments colorAdjustments;
     private FilmGrain filmGrain;
@@ -47,7 +47,7 @@ public class NightVision : MonoBehaviour
         if (isActive)
         {
             RaycastHit hit;
-            if (Physics.SphereCast(mainCamera.position, .5f, EnemyManager.position - mainCamera.position, out hit, 50f, 
+            if (Physics.SphereCast(mainCamera.position, .5f, Enemy.position - mainCamera.position, out hit, 50f, 
                 1 << EnemyManager.layer | 1 << 7, QueryTriggerInteraction.Collide))
             {
                 if (hit.collider.gameObject.layer == EnemyManager.layer) onEnemyCaught?.Invoke(stunDuration);

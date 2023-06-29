@@ -7,7 +7,7 @@ public class EnemyManager : MonoBehaviour
 {
     private static EnemyManager instance;
     public static int layer { get { return 13;} }
-    public static Vector3 position { get { return instance.enemy.transform.position; } }
+    // public static Vector3 position { get { return instance.enemy.transform.position; } }
 
     [SerializeField] private float[] spawnTime;
     [SerializeField] private float[] despawnTime;
