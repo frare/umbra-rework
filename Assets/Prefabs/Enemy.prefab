@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 551803619881684031}
   - component: {fileID: 6870646695759346678}
   m_Layer: 0
-  m_Name: Moths_Particles
+  m_Name: Particles (Moths)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5096,7 +5096,7 @@ GameObject:
   - component: {fileID: 4487674872111346945}
   - component: {fileID: 8986997460401340805}
   m_Layer: 0
-  m_Name: Particle System (1)
+  m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

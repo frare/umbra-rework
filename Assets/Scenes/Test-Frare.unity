@@ -131,22 +131,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2021630077, guid: 29aa42f68ce7ef94693397dfd1ce8d21, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 2021630079, guid: 29aa42f68ce7ef94693397dfd1ce8d21, type: 3}
-      propertyPath: m_Color.b
-      value: 0.8537736
-      objectReference: {fileID: 0}
-    - target: {fileID: 2021630079, guid: 29aa42f68ce7ef94693397dfd1ce8d21, type: 3}
-      propertyPath: m_Color.g
-      value: 0.93108743
-      objectReference: {fileID: 0}
-    - target: {fileID: 2021630079, guid: 29aa42f68ce7ef94693397dfd1ce8d21, type: 3}
-      propertyPath: m_Color.r
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 162916969510316486, guid: 29aa42f68ce7ef94693397dfd1ce8d21,
         type: 3}
       propertyPath: m_RootOrder
@@ -207,36 +191,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 8589347290463579589, guid: 29aa42f68ce7ef94693397dfd1ce8d21,
-        type: 3}
-      propertyPath: moveSpeed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8589347290463579589, guid: 29aa42f68ce7ef94693397dfd1ce8d21,
-        type: 3}
-      propertyPath: sprintSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8589347290463579589, guid: 29aa42f68ce7ef94693397dfd1ce8d21,
-        type: 3}
-      propertyPath: sprintDuration
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8589347290463579589, guid: 29aa42f68ce7ef94693397dfd1ce8d21,
-        type: 3}
-      propertyPath: sprintRechargeDelay
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8589347290463579589, guid: 29aa42f68ce7ef94693397dfd1ce8d21,
-        type: 3}
-      propertyPath: sprintRechargeSpeed
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8589347290463579589, guid: 29aa42f68ce7ef94693397dfd1ce8d21,
-        type: 3}
-      propertyPath: cinemachineCameraTarget
-      value: 
-      objectReference: {fileID: 221638016}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 29aa42f68ce7ef94693397dfd1ce8d21, type: 3}
 --- !u!4 &221638016 stripped
@@ -1020,7 +974,7 @@ PrefabInstance:
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.65
+      value: 1.69
       objectReference: {fileID: 0}
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f,
         type: 3}
@@ -1133,7 +1087,7 @@ PrefabInstance:
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.65
+      value: 1.69
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8,
         type: 3}
@@ -1301,7 +1255,7 @@ PrefabInstance:
     - target: {fileID: 2944818733884056919, guid: 08bb189b5670fa842bb7c425454f4324,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 50
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2944818733884056919, guid: 08bb189b5670fa842bb7c425454f4324,
         type: 3}
