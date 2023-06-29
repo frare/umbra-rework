@@ -4862,12 +4862,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23d9df01307f21249a1f0ac8f23628b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentState: 2
+  currentState: 1
   wanderSpeed: 3
-  wanderDistance: 30
+  wanderDistance: 20
   wanderRetargetTime: 3
   chaseSpeed: 5
-  chaseDurationWithoutLOS: 0
+  chaseGiveupTime: 0
 --- !u!114 &2944818733884056920
 MonoBehaviour:
   m_ObjectHideFlags: 0
