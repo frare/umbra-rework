@@ -23,19 +23,19 @@ public class LevelManager : MonoBehaviour
         Time.timeScale = 1f;
         Cursor.lockState = CursorLockMode.Locked;
 
-        List<Page> pages = new List<Page>(FindObjectsOfType<Page>());
-        while (pages.Count > 6) 
+        List<Collectible> collectibles = new List<Collectible>(FindObjectsOfType<Collectible>());
+        while (collectibles.Count > 6) 
         {
-            int randomIndex = Random.Range(0, pages.Count - 1);
-            pages[randomIndex].gameObject.SetActive(false);
-            pages.RemoveAt(randomIndex);
+            int randomIndex = Random.Range(0, collectibles.Count - 1);
+            collectibles[randomIndex].gameObject.SetActive(false);
+            collectibles.RemoveAt(randomIndex);
         }
-        pagesTotalCount = FindObjectsOfType<Page>().Length;
+        pagesTotalCount = FindObjectsOfType<Collectible>().Length;
     }
 
     private void OnValidate()
     {
-        pagesTotalCount = FindObjectsOfType<Page>().Length;
+        pagesTotalCount = FindObjectsOfType<Collectible>().Length;
     }
 
     public static void PageCollected()
@@ -53,12 +53,14 @@ public class LevelManager : MonoBehaviour
 
     private static void GameWin()
     {
+        // stops everything, then start the final cutscene
+
         Time.timeScale = 0f;
         UIManager.ShowGameWinScreen();
         Cursor.lockState = CursorLockMode.None;
     }
 
-    public static void GameOver()
+    public static void GameLose()
     {
         Time.timeScale = 0f;
         UIManager.ShowGameOverScreen(); 

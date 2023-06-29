@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     public static Player instance;
     public static int layer { get { return 8; } }
     public static Vector3 position { get { return instance.transform.position; } }
+    public static bool grabbed { get; private set; }
 
     [Header("Player Attributes")]
     [SerializeField] private float moveSpeed = 2f;
@@ -143,21 +144,21 @@ public class Player : MonoBehaviour
     private void TryInteract()
     {
         RaycastHit hit;
-        if (Physics.Raycast(mainCamera.position, mainCamera.forward, out hit, Mathf.Infinity, 1 << Page.layer | 1 << 7, QueryTriggerInteraction.Collide))
+        if (Physics.Raycast(mainCamera.position, mainCamera.forward, out hit, Mathf.Infinity, 1 << Collectible.layer | 1 << 7, QueryTriggerInteraction.Collide))
         {
-            if (hit.collider.gameObject.layer == Page.layer &&
+            if (hit.collider.gameObject.layer == Collectible.layer &&
                 Vector3.Distance(transform.position, hit.transform.position) <= interactDistance)
             {
-                hit.collider.gameObject.GetComponent<Page>().Collect();
+                hit.collider.gameObject.GetComponent<Collectible>().Collect();
             }
         }
     }
 
     private void UpdateReticle()
     {
-        if (Physics.Raycast(mainCamera.position, mainCamera.forward, out reticleHit, Mathf.Infinity, 1 << Page.layer, QueryTriggerInteraction.Collide))
+        if (Physics.Raycast(mainCamera.position, mainCamera.forward, out reticleHit, Mathf.Infinity, 1 << Collectible.layer, QueryTriggerInteraction.Collide))
         {
-            if (reticleHit.collider.gameObject.layer == Page.layer &&
+            if (reticleHit.collider.gameObject.layer == Collectible.layer &&
                 Vector3.Distance(transform.position, reticleHit.transform.position) <= interactDistance)
             {
                 UIManager.SetReticleSize(true);

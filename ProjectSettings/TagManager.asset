@@ -18,7 +18,7 @@ TagManager:
   - Ground
   - PostProcessing
   - Minimap
-  - Page
+  - Collectible
   - Enemy
   - PlayerWall
   - Render
