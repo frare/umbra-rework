@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EnemyAnimator : MonoBehaviour
 {
@@ -9,6 +10,12 @@ public class EnemyAnimator : MonoBehaviour
     private Transform mainCam;
 
 
+
+    private void OnEnable()
+    {
+        // could help solve the issue with animating the a mesh instead of sprite
+        // GetComponentInChildren<SpriteRenderer>().RegisterSpriteChangeCallback(OnSpriteChanged);
+    }
 
     private void OnValidate()
     {
