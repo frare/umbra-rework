@@ -61,5 +61,5 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
-# ProBuilder settings
+# Settings files that keep showing as modified but with no changes
 ProjectSettings/Packages/com.unity.probuilder/Settings.json
