@@ -22,7 +22,7 @@ TagManager:
   - Enemy
   - PlayerWall
   - RenderTexture
-  - 
+  - Hand
   - 
   - 
   - 
@@ -41,6 +41,9 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Hand
+    uniqueID: 349874471
     locked: 0
   - name: RenderUI
     uniqueID: 2979387583
