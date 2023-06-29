@@ -103,7 +103,7 @@ Light:
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
-  m_Color: {r: 1, g: 0.9830888, b: 0.95, a: 1}
+  m_Color: {r: 1, g: 0.93108743, b: 0.8537736, a: 1}
   m_Intensity: 5
   m_Range: 30
   m_SpotAngle: 85.89029
@@ -435,7 +435,7 @@ MonoBehaviour:
   duration: 2.5
   cooldown: 45
   stunDuration: 10
-  boostedColor: {r: 0, g: 1, b: 0, a: 1}
+  boostedColor: {r: 0, g: 0.8549928, b: 0.8549928, a: 1}
   boostedIntensity: 10
 --- !u!114 &7598830480639076047
 MonoBehaviour:
