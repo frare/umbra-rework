@@ -9,19 +9,19 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - IgnoreLight
+  - Editor Only
   - Water
   - UI
   - 
-  - Solid
+  - Geometry
   - Player
   - Ground
   - PostProcessing
   - Minimap
-  - Page
+  - Collectible
   - Enemy
   - PlayerWall
-  - 
+  - RenderTexture
   - 
   - 
   - 
@@ -41,4 +41,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: RenderUI
+    uniqueID: 2979387583
     locked: 0

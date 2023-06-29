@@ -6,18 +6,25 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     public static Player instance;
-    public static int layer { get { return 8; } private set {  } }
-    public static Vector3 position { get { return instance.transform.position; } private set { } }
+    public static int layer { get { return 8; } }
+    public static Vector3 position { get { return instance.transform.position; } }
+    public static bool grabbed { get; private set; }
 
     [Header("Player Attributes")]
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private float sprintSpeed = 5f;
-    [SerializeField] private float rotationSmoothTime = 0.12f;
+    [SerializeField] private float sprintDuration = 1f;
+    [SerializeField] private float sprintRechargeDelay;
+    [SerializeField] private float sprintRechargeSpeed;
+    [SerializeField] private float rotationSpeed = 1f;
     [SerializeField] private float acceleration = 10f;
     [SerializeField] private float interactDistance = 2.5f;
     private float speed;
     private const float speedOffset = 0.1f;
-    private float targetRotation = 0f;
+    private float sprintEnergy;
+    private float sprintCurrentRecharge;
+    private bool canSprint { get { return sprintEnergy > 0f; } }
+    private bool isSprinting { get { return input.sprint && canSprint; } }
     private float rotationVelocity;
     private float verticalVelocity;
 
@@ -25,8 +32,6 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform cinemachineCameraTarget;
     [SerializeField] private float cameraTopClamp = 70f;
     [SerializeField] private float cameraBottomClamp = -30f;
-    [SerializeField] private float cameraAngleOverride = 0f;
-    [SerializeField] private bool cameraLockRotation = false;
     private float cinemachineTargetYaw;
     private float cinemachineTargetPitch;
     private const float threshold = 0.01f;
@@ -57,6 +62,8 @@ public class Player : MonoBehaviour
         input.onInteractPressed += TryInteract;
 
         mainCamera = Camera.main.transform;
+
+        sprintEnergy = sprintDuration;
     }
 
     private void Update()
@@ -72,68 +79,86 @@ public class Player : MonoBehaviour
 
     
 
+    private void CameraRotation()
+    {
+        if (input.look.sqrMagnitude >= threshold)
+        {
+            float deltaTimeMultiplier = isCurrentDeviceMouse ? 1.0f : Time.deltaTime;
+            
+            cinemachineTargetPitch += input.look.y * rotationSpeed * deltaTimeMultiplier;
+            rotationVelocity = input.look.x * rotationSpeed * deltaTimeMultiplier;
+
+            cinemachineTargetPitch = ClampAngle(cinemachineTargetPitch, cameraBottomClamp, cameraTopClamp);
+
+            cinemachineCameraTarget.transform.localRotation = Quaternion.Euler(cinemachineTargetPitch, 0.0f, 0.0f);
+
+            transform.Rotate(Vector3.up * rotationVelocity);
+        }
+    }
+
     private void Move()
     {
-        float targetSpeed = input.move == Vector2.zero ? 0f : (input.sprint ? sprintSpeed : moveSpeed);
-        float currentHorizontalSpeed = new Vector3(controller.velocity.x, 0f, controller.velocity.z).magnitude;
+        Sprint();
+
+        float targetSpeed = isSprinting ? sprintSpeed : moveSpeed;
+        if (input.move == Vector2.zero) targetSpeed = 0.0f;
+
+        float currentHorizontalSpeed = new Vector3(controller.velocity.x, 0.0f, controller.velocity.z).magnitude;
+        float speedOffset = 0.1f;
         float inputMagnitude = input.analogMovement ? input.move.magnitude : 1f;
 
         if (currentHorizontalSpeed < targetSpeed - speedOffset || currentHorizontalSpeed > targetSpeed + speedOffset)
         {
             speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude, Time.deltaTime * acceleration);
+
             speed = Mathf.Round(speed * 1000f) / 1000f;
         }
         else speed = targetSpeed;
 
-        Vector3 inputDirection = new Vector3(input.move.x, 0f, input.move.y).normalized;
+        Vector3 inputDirection = new Vector3(input.move.x, 0.0f, input.move.y).normalized;
         if (input.move != Vector2.zero)
         {
-            targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + mainCamera.eulerAngles.y;
-            float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref rotationVelocity, rotationSmoothTime);
-
-            transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+            inputDirection = transform.right * input.move.x + transform.forward * input.move.y;
         }
 
-        Vector3 targetDirection = (Quaternion.Euler(0f, targetRotation, 0f) * Vector3.forward).normalized;
-
-        controller.Move(targetDirection * speed * Time.deltaTime + new Vector3(0f, verticalVelocity, 0f) * Time.deltaTime);
+        controller.Move(inputDirection.normalized * (speed * Time.deltaTime) + new Vector3(0.0f, verticalVelocity, 0.0f) * Time.deltaTime);
     }
 
-    private void CameraRotation()
+    private void Sprint()
     {
-        if (input.look.sqrMagnitude >= threshold && !cameraLockRotation)
+        // if (Input.GetKeyDown(KeyCode.F1)) sprintEnergy = sprintDuration;
+
+        if (isSprinting) 
         {
-            float deltaTimeMultiplier = isCurrentDeviceMouse ? 1.0f : Time.deltaTime;
-
-            cinemachineTargetYaw += input.look.x * deltaTimeMultiplier;
-            cinemachineTargetPitch += input.look.y * deltaTimeMultiplier;
+            sprintEnergy -= Time.deltaTime;
+            sprintCurrentRecharge = 0f;
         }
+        else sprintCurrentRecharge += Time.deltaTime;
 
-        cinemachineTargetYaw = ClampAngle(cinemachineTargetYaw, float.MinValue, float.MaxValue);
-        cinemachineTargetPitch = ClampAngle(cinemachineTargetPitch, cameraBottomClamp, cameraTopClamp);
+        if (sprintCurrentRecharge >= sprintRechargeDelay && sprintEnergy < sprintDuration) 
+            sprintEnergy += Time.deltaTime * sprintRechargeSpeed;
 
-        cinemachineCameraTarget.rotation = 
-            Quaternion.Euler(cinemachineTargetPitch + cameraAngleOverride, cinemachineTargetYaw, 0.0f);
+        UIManager.UpdateSprintBar(sprintEnergy / sprintDuration);
     }
 
     private void TryInteract()
     {
         RaycastHit hit;
-        if (Physics.Raycast(mainCamera.position, mainCamera.forward, out hit, Mathf.Infinity, 1 << Page.layer | 1 << 7, QueryTriggerInteraction.Collide))
+        if (Physics.Raycast(mainCamera.position, mainCamera.forward, out hit, Mathf.Infinity, 1 << Collectible.layer | 1 << 7, QueryTriggerInteraction.Collide))
         {
-            if (hit.collider.gameObject.layer == Page.layer &&
+            if (hit.collider.gameObject.layer == Collectible.layer &&
                 Vector3.Distance(transform.position, hit.transform.position) <= interactDistance)
             {
-                hit.collider.gameObject.GetComponent<Page>().Collect();
+                hit.collider.gameObject.GetComponent<Collectible>().Collect();
             }
         }
     }
 
     private void UpdateReticle()
     {
-        if (Physics.Raycast(mainCamera.position, mainCamera.forward, out reticleHit, Mathf.Infinity, 1 << Page.layer, QueryTriggerInteraction.Collide))
+        if (Physics.Raycast(mainCamera.position, mainCamera.forward, out reticleHit, Mathf.Infinity, 1 << Collectible.layer, QueryTriggerInteraction.Collide))
         {
-            if (reticleHit.collider.gameObject.layer == Page.layer &&
+            if (reticleHit.collider.gameObject.layer == Collectible.layer &&
                 Vector3.Distance(transform.position, reticleHit.transform.position) <= interactDistance)
             {
                 UIManager.SetReticleSize(true);
