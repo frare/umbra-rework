@@ -3,9 +3,6 @@
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
 
-# Local testing scene
-/Assets/00-Testing.unity
-
 # Unnecessary folders
 /[Ll]ibrary/
 /[Tt]emp/
