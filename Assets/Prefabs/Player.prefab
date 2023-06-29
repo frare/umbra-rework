@@ -251,6 +251,7 @@ MonoBehaviour:
   sprintRechargeSpeed: 1
   rotationSpeed: 1
   acceleration: 10
+  gravity: -9.81
   interactDistance: 2.5
   cinemachineCameraTarget: {fileID: 1853809857270801945}
   cameraTopClamp: 70
@@ -397,8 +398,8 @@ GameObject:
   m_Component:
   - component: {fileID: 819009243950834225}
   - component: {fileID: 9008028614585433250}
-  m_Layer: 0
-  m_Name: Player_Hands
+  m_Layer: 16
+  m_Name: Hands
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -439,7 +440,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: eab9e076e87aab94f8de0cc5531af5bc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
