@@ -13,9 +13,11 @@ public class Enemy : MonoBehaviour
 
     // Attributes
     [SerializeField] private NavigationState currentState = NavigationState.NONE;
-    [SerializeField] private float wanderDistance;
     [SerializeField] private float wanderSpeed;
+    [SerializeField] private float wanderDistance;
     [SerializeField] private float wanderRetargetTime;
+    [SerializeField] private float chaseSpeed;
+    [SerializeField] private float chaseDurationWithoutLOS;
 
     // References
     private NavMeshAgent navMeshAgent;
@@ -47,16 +49,24 @@ public class Enemy : MonoBehaviour
         if (other.gameObject.layer == Player.layer && !LevelManager.isGameOver)
         {
             LevelManager.GameOver();
+
+            // change to jumpscare, then gameover
         }
+    }
+
+    private void Update()
+    {
+        if (currentState == NavigationState.Chase) navMeshAgent.destination = Player.position;
     }
 
 
     // Class methods
     public void ChangeState(NavigationState targetState)
     {
+        NavigationState previousState = currentState;
         currentState = targetState;
 
-        switch (currentState)
+        switch (targetState)
         {
             case NavigationState.NONE:
             navMeshAgent.destination = transform.position;
@@ -70,6 +80,7 @@ public class Enemy : MonoBehaviour
 
             case NavigationState.Chase:
             navMeshAgent.autoBraking = false;
+            navMeshAgent.speed = chaseSpeed;
             Chase();
             break;
         }
@@ -104,7 +115,12 @@ public class Enemy : MonoBehaviour
 
     private void Chase()
     {
+        // stops moving,
+        // do jumpscare,
+        // then starts chasing
 
+        // should check if player is in line of sight for X seconds,
+        // if not, returns to wandering
     }
 
 
