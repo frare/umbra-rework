@@ -194,23 +194,13 @@ PrefabInstance:
     - target: {fileID: 1459311618546335609, guid: 29aa42f68ce7ef94693397dfd1ce8d21,
         type: 3}
       propertyPath: m_Name
-      value: Hands
-      objectReference: {fileID: 0}
-    - target: {fileID: 1459311618546335609, guid: 29aa42f68ce7ef94693397dfd1ce8d21,
-        type: 3}
-      propertyPath: m_Layer
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 8589347290463579589, guid: 29aa42f68ce7ef94693397dfd1ce8d21,
-        type: 3}
-      propertyPath: gravity
-      value: -9.81
+      value: Player_Hands
       objectReference: {fileID: 0}
     - target: {fileID: 9008028614585433250, guid: 29aa42f68ce7ef94693397dfd1ce8d21,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: eab9e076e87aab94f8de0cc5531af5bc, type: 2}
+      propertyPath: m_FlipX
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 29aa42f68ce7ef94693397dfd1ce8d21, type: 3}
 --- !u!4 &221638016 stripped
@@ -993,6 +983,44 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1983725281 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1459311618546335609, guid: 29aa42f68ce7ef94693397dfd1ce8d21,
+    type: 3}
+  m_PrefabInstance: {fileID: 221638014}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1983725284
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1983725281}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4b9bed602eb4ea449a167659b2afe50a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &1983725285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1983725281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdc7c46033b05c54fac6bdb1e1ee5922, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2015913694
 PrefabInstance:
   m_ObjectHideFlags: 0

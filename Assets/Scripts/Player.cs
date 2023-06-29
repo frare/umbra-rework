@@ -10,6 +10,10 @@ public class Player : Singleton<Player>
     public static Vector3 position { get { return instance.transform.position; } }
     public static bool grabbed { get; private set; }
 
+    // Properties
+    public bool isMoving { get { return controller.velocity.x != 0f || controller.velocity.z != 0f; } }
+    public bool isSprinting { get { return input.sprint && canSprint; } }
+
     [Header("Player Attributes")]
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private float sprintSpeed = 5f;
@@ -25,7 +29,6 @@ public class Player : Singleton<Player>
     private float sprintEnergy;
     private float sprintCurrentRecharge;
     private bool canSprint { get { return sprintEnergy > 0f; } }
-    private bool isSprinting { get { return input.sprint && canSprint; } }
     private float rotationVelocity;
     private float verticalVelocity;
 
