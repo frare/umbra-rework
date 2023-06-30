@@ -4,35 +4,19 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UIManager : MonoBehaviour
+public class UIManager : Singleton<UIManager>
 {
-    public static UIManager instance;
-
-    [SerializeField] private Image visorCooldown;
-    [SerializeField] private RectTransform reticle;
     [SerializeField] private TMP_Text pagesCount;
     [SerializeField] private float pagesCountFadeTime;
     [SerializeField] private Image sprintBar;
-    [SerializeField] private Image gameOverScreen;
+    [SerializeField] private Image gameLoseScreen;
     [SerializeField] private Image gameWinScreen;
 
     private Coroutine pagesCountFade;
 
 
 
-    private void Awake()
-    {
-        instance = this;
 
-        visorCooldown.fillAmount = 0f;
-    }
-
-    public static void UpdateVisorCooldown(float normalizedTime)
-    {
-        if (instance == null) return;
-
-        instance.visorCooldown.fillAmount = normalizedTime;
-    }
 
     public static void UpdatePagesCount(int pagesCollected, int pagesTotal)
     {
@@ -58,15 +42,6 @@ public class UIManager : MonoBehaviour
         pagesCount.color = Color.clear;
     }
 
-    private static Vector2 reticleBigSize = new Vector2(50, 50);
-    private static Vector2 reticleSmallSize = new Vector2(25, 25);
-    public static void SetReticleSize(bool interactable)
-    {
-        if (instance == null) return;
-
-        instance.reticle.sizeDelta = interactable ? reticleBigSize : reticleSmallSize;
-    }
-
     public static void UpdateSprintBar(float normalizedAmount)
     {
         if (instance == null) return;
@@ -78,7 +53,7 @@ public class UIManager : MonoBehaviour
     {
         if (instance == null) return;
 
-        instance.gameOverScreen.gameObject.SetActive(true);
+        instance.gameLoseScreen.gameObject.SetActive(true);
     }
 
     public static void ShowGameWinScreen()

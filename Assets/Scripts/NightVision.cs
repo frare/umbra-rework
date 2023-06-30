@@ -111,7 +111,7 @@ public class NightVision : MonoBehaviour
             time -= Time.deltaTime;
             normalizedTime = time / cooldown;
 
-            UIManager.UpdateVisorCooldown(normalizedTime);
+            // UIManager.UpdateVisorCooldown(normalizedTime);
 
             yield return null;
         }

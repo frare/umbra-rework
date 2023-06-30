@@ -135,11 +135,14 @@ public class Enemy : Singleton<Enemy>
             if (hit.transform.gameObject.layer == Player.layer)
             {
                 detection += Time.deltaTime;
+                navMeshAgent.speed = 0f;
+                transform.rotation = Quaternion.LookRotation(Player.position - transform.position);
                 if (detection >= detectionDuration) SetNavigationState(NavigationState.Chase);
                 return;
             }
         }
 
+        navMeshAgent.speed = wanderSpeed;
         detection -= Time.deltaTime * detectionCooldownSpeed;
     }
 
@@ -219,7 +222,13 @@ public class Enemy : Singleton<Enemy>
 
         yield return new WaitForSeconds(3f);
 
-        LevelManager.GameLose();
+        LevelManager.GameEnd();
+    }
+
+    public static void UpdateSpeed()
+    {
+        instance.chaseSpeed *= 1.2f;
+        instance.wanderSpeed *= 1.2f;
     }
 
 

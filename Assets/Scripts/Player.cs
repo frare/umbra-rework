@@ -51,6 +51,7 @@ public class Player : Singleton<Player>
     [SerializeField] private NightVision nightVision;
     [SerializeField] private Transform cameraHeight;
     [SerializeField] private Transform hands;
+    [SerializeField] private Animator collectiblesAnimator;
     private Transform mainCamera;
     private UnityEngine.UI.Image reticle;
     private RaycastHit reticleHit;
@@ -65,7 +66,7 @@ public class Player : Singleton<Player>
         cinemachineTargetYaw = cinemachineCameraTarget.eulerAngles.y;
 
         input.onVisorPressed += nightVision.TryToEnable;
-        input.onInteractPressed += TryInteract;
+        // input.onInteractPressed += TryInteract;
 
         mainCamera = Camera.main.transform;
 
@@ -75,7 +76,7 @@ public class Player : Singleton<Player>
 
     private void Update()
     {
-        UpdateReticle();
+        // UpdateReticle();
 
         if (isGrabbed) return;
 
@@ -88,6 +89,15 @@ public class Player : Singleton<Player>
         if (isGrabbed) return;
 
         CameraRotation();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == Collectible.layer) 
+        {
+            other.GetComponent<Collectible>().Collect();
+            collectiblesAnimator.SetTrigger("collect");
+        }
     }
 
     
@@ -140,6 +150,7 @@ public class Player : Singleton<Player>
         UIManager.UpdateSprintBar(sprintEnergy / sprintDuration);
     }
 
+    /*
     private void TryInteract()
     {
         RaycastHit hit;
@@ -152,12 +163,14 @@ public class Player : Singleton<Player>
             }
         }
     }
+    */
 
     private void Gravity()
     {
         verticalVelocity += gravity * Time.deltaTime;
     }
 
+    /*
     private void UpdateReticle()
     {
         if (Physics.Raycast(mainCamera.position, mainCamera.forward, out reticleHit, Mathf.Infinity, 1 << Collectible.layer, QueryTriggerInteraction.Collide))
@@ -172,6 +185,7 @@ public class Player : Singleton<Player>
         
         UIManager.SetReticleSize(false);
     }
+    */
 
     private void CameraRotation()
     {
