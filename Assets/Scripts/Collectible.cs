@@ -15,7 +15,7 @@ public class Collectible : MonoBehaviour
 
 
 
-    private void OnValidate()
+    private void Awake()
     {
         sprite = GetComponentInChildren<SpriteRenderer>(true).transform;
     }

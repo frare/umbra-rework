@@ -11,7 +11,7 @@ public class EnemyAnimator : MonoBehaviour
 
 
 
-    private void OnValidate()
+    private void Awake()
     {
         enemyBehaviour = GetComponent<Enemy>();
         mainCam = Camera.main?.transform;

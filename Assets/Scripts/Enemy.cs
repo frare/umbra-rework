@@ -46,7 +46,7 @@ public class Enemy : Singleton<Enemy>
 
 
     // Unity callbacks
-    private void OnValidate()
+    private void Awake()
     {
         navMeshAgent = GetComponentInChildren<NavMeshAgent>(true);
         spriteRenderer = GetComponentInChildren<SpriteRenderer>(true);

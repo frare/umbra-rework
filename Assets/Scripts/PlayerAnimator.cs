@@ -10,7 +10,7 @@ public class PlayerAnimator : MonoBehaviour
 
 
 
-    private void OnValidate()
+    private void Awake()
     {
         playerBehaviour = GetComponentInParent<Player>();
         animator = GetComponent<Animator>();
