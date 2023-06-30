@@ -225,6 +225,11 @@ PrefabInstance:
       propertyPath: hands
       value: 
       objectReference: {fileID: 1983725286}
+    - target: {fileID: 8589347290463579589, guid: 29aa42f68ce7ef94693397dfd1ce8d21,
+        type: 3}
+      propertyPath: cameraHeight
+      value: 
+      objectReference: {fileID: 221638016}
     - target: {fileID: 9008028614585433250, guid: 29aa42f68ce7ef94693397dfd1ce8d21,
         type: 3}
       propertyPath: m_FlipX
@@ -977,7 +982,7 @@ PrefabInstance:
     - target: {fileID: 2944818733884056919, guid: 08bb189b5670fa842bb7c425454f4324,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 69.4
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 2944818733884056919, guid: 08bb189b5670fa842bb7c425454f4324,
         type: 3}
@@ -1016,78 +1021,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2944818733884056921, guid: 08bb189b5670fa842bb7c425454f4324,
         type: 3}
-      propertyPath: hand
-      value: 
-      objectReference: {fileID: 2944818734414911075}
-    - target: {fileID: 2944818733884056921, guid: 08bb189b5670fa842bb7c425454f4324,
-        type: 3}
-      propertyPath: head
-      value: 
-      objectReference: {fileID: 2944818734414911074}
-    - target: {fileID: 2944818733884056921, guid: 08bb189b5670fa842bb7c425454f4324,
-        type: 3}
-      propertyPath: handPivot
-      value: 
-      objectReference: {fileID: 2944818734414911075}
-    - target: {fileID: 2944818733884056921, guid: 08bb189b5670fa842bb7c425454f4324,
-        type: 3}
-      propertyPath: headPivot
-      value: 
-      objectReference: {fileID: 2944818734414911074}
-    - target: {fileID: 2944818733884056921, guid: 08bb189b5670fa842bb7c425454f4324,
-        type: 3}
       propertyPath: currentState
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2944818733884056921, guid: 08bb189b5670fa842bb7c425454f4324,
         type: 3}
-      propertyPath: grabAnimationDuration
-      value: 2.5
+      propertyPath: chaseDuration
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2944818733884056921, guid: 08bb189b5670fa842bb7c425454f4324,
         type: 3}
-      propertyPath: wanderTeleportDistance
-      value: 50
+      propertyPath: detectionDuration
+      value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 3813769148149663002, guid: 08bb189b5670fa842bb7c425454f4324,
+    - target: {fileID: 2944818733884056921, guid: 08bb189b5670fa842bb7c425454f4324,
         type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3813769148149663002, guid: 08bb189b5670fa842bb7c425454f4324,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6501237091299979714, guid: 08bb189b5670fa842bb7c425454f4324,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6501237091299979714, guid: 08bb189b5670fa842bb7c425454f4324,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 6501237091299979714, guid: 08bb189b5670fa842bb7c425454f4324,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 2
+      propertyPath: detectionCooldownSpeed
+      value: 0.333
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08bb189b5670fa842bb7c425454f4324, type: 3}
---- !u!4 &2944818734414911074 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3813769148149663002, guid: 08bb189b5670fa842bb7c425454f4324,
-    type: 3}
-  m_PrefabInstance: {fileID: 2944818734414911073}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &2944818734414911075 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6501237091299979714, guid: 08bb189b5670fa842bb7c425454f4324,
-    type: 3}
-  m_PrefabInstance: {fileID: 2944818734414911073}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3573090689106525901
 PrefabInstance:
   m_ObjectHideFlags: 0

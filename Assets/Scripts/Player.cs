@@ -9,6 +9,7 @@ public class Player : Singleton<Player>
     public static int layer { get { return 8; } }
     public static Vector3 position { get { return instance.transform.position; } set { instance.transform.position = value; } }
     public static Quaternion rotation { get { return instance.transform.rotation; } set { instance.transform.rotation = value; } }
+    public static Quaternion cameraRotation { get { return instance.cameraHeight.rotation; } set { instance.cameraHeight.rotation = value; } }
 
     // Properties
     public bool isMoving { get { return controller.velocity.x != 0f || controller.velocity.z != 0f; } }
@@ -48,6 +49,7 @@ public class Player : Singleton<Player>
     [SerializeField] private InputManager input;
     [SerializeField] private Transform flashlight;
     [SerializeField] private NightVision nightVision;
+    [SerializeField] private Transform cameraHeight;
     [SerializeField] private Transform hands;
     private Transform mainCamera;
     private UnityEngine.UI.Image reticle;

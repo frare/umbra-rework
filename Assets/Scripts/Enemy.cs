@@ -17,22 +17,26 @@ public class Enemy : Singleton<Enemy>
 
     // Inspector attributes
     [SerializeField] private NavigationState currentState;
+    [SerializeField, ReadOnly] private float detection;
+    [SerializeField] private float detectionRange;
+    [SerializeField] private float detectionDuration;
+    [SerializeField] private float detectionCooldownSpeed;
     [SerializeField] private float wanderSpeed;
     [SerializeField] private float wanderDistance;
     [SerializeField] private float wanderRetargetTime;
     [SerializeField] private float wanderTeleportDistance;
     [SerializeField] private float chaseSpeed;
-    [SerializeField] private float chaseGiveupTime;
-    [SerializeField] private float chaseDetectionRange;
+    [SerializeField] private float chaseDuration;
     [SerializeField] private float grabAnimationDuration;
 
     [Header("References")]
     [SerializeField] private Transform hand;
     [SerializeField] private Transform head;
+    [SerializeField] private Sprite grabSprite;
 
     // Other components
     private NavMeshAgent navMeshAgent;
-    private new Renderer renderer;
+    private SpriteRenderer spriteRenderer;
     private UnityEngine.Rendering.Volume postProcessVolume;
 
     private Coroutine wanderCoroutine;
@@ -45,13 +49,13 @@ public class Enemy : Singleton<Enemy>
     private void OnValidate()
     {
         navMeshAgent = GetComponentInChildren<NavMeshAgent>(true);
-        renderer = GetComponentInChildren<Renderer>(true);
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>(true);
         postProcessVolume = GetComponentInChildren<UnityEngine.Rendering.Volume>(true);
     }
 
     private void OnEnable()
     {
-        renderer.material.color = Color.white;
+        spriteRenderer.material.color = Color.white;
         navMeshAgent.isStopped = false;
 
         SetNavigationState(currentState);
@@ -61,18 +65,20 @@ public class Enemy : Singleton<Enemy>
     {
         if (other.gameObject.layer == Player.layer && !LevelManager.isGameOver)
         {
-            GrabPlayer();
+            Chase_GrabPlayer();
         }
     }
 
     private void Update()
     {
-        if (currentState == NavigationState.Chase) navMeshAgent.destination = Player.position;
-        else if (currentState == NavigationState.Wander)
+        if (currentState == NavigationState.Wander)
         {
             if (Vector3.Distance(transform.position, Player.position) > wanderTeleportDistance) 
-                Teleport();
+                Wander_Teleport();
+            else
+                Wandering();
         }
+        else if (currentState == NavigationState.Chase) Chasing();
     }
 
 
@@ -95,13 +101,14 @@ public class Enemy : Singleton<Enemy>
             case NavigationState.Wander:
             navMeshAgent.autoBraking = true;
             navMeshAgent.speed = wanderSpeed;
+            detection = 0f;
             Wander();
             break;
 
             case NavigationState.Chase:
             navMeshAgent.autoBraking = false;
             navMeshAgent.speed = chaseSpeed;
-            Chase();
+            detection = chaseDuration;
             break;
         }
 
@@ -119,6 +126,23 @@ public class Enemy : Singleton<Enemy>
         }
     }
 
+    private void Wandering()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(head.position, Player.position - head.position, out hit, 
+            detectionRange, 1 << Player.layer | 1 << 7, QueryTriggerInteraction.Collide))
+        {
+            if (hit.transform.gameObject.layer == Player.layer)
+            {
+                detection += Time.deltaTime;
+                if (detection >= detectionDuration) SetNavigationState(NavigationState.Chase);
+                return;
+            }
+        }
+
+        detection -= Time.deltaTime * detectionCooldownSpeed;
+    }
+
     private IEnumerator Wander_GetNextDestination()
     {
         float time = 0f;
@@ -134,7 +158,7 @@ public class Enemy : Singleton<Enemy>
         Wander();
     }
 
-    private void Teleport()
+    private void Wander_Teleport()
     {
         Vector3 randomDirection = (Random.insideUnitSphere).normalized * wanderDistance * 2f;
         NavMeshHit navHit;
@@ -142,34 +166,40 @@ public class Enemy : Singleton<Enemy>
             transform.position = navHit.position;
     }
 
-    private void Chase()
+    private void Chasing()
     {
-        RaycastHit hit;
-        if (Physics.Raycast(head.position, Player.position - head.position, out hit, chaseDetectionRange, 1 << Player.layer))
-        {
-            
-        }
-
         // stops moving, do a jumpscare,
         // then starts chasing
 
-        // should check if player is in line of sight for X seconds,
-        // if not, returns to wandering
+        RaycastHit hit;
+        if (Physics.Raycast(head.position, Player.position - head.position, out hit, 
+            detectionRange, 1 << Player.layer | 1 << 7, QueryTriggerInteraction.Collide))
+        {
+            if (hit.transform.gameObject.layer == Player.layer)
+            {
+                navMeshAgent.destination = Player.position;
+                return;
+            }
+        }
+
+        detection -= Time.deltaTime;
+        if (detection <= 0f) SetNavigationState(NavigationState.Wander);
     }
 
-    private void GrabPlayer()
+    private void Chase_GrabPlayer()
     {
         GetComponentInChildren<Animator>().enabled = false;
+        spriteRenderer.sprite = grabSprite;
         SetNavigationState(NavigationState.NONE);
         navMeshAgent.velocity = Vector3.zero;
         Player.Grabbed();
-        StartCoroutine(GrabPlayerSmooth());
+        StartCoroutine(Chase_GrabPlayerSmooth());
     }
 
-    private IEnumerator GrabPlayerSmooth()
+    private IEnumerator Chase_GrabPlayerSmooth()
     {
         Vector3 initialPosition = Player.position;
-        Quaternion initialRotation = Player.rotation;
+        Quaternion initialRotation = Player.cameraRotation;
         float time = 0f;
         float normalizedTime = 0f;
         while (time < grabAnimationDuration)
@@ -178,13 +208,14 @@ public class Enemy : Singleton<Enemy>
             normalizedTime = time / grabAnimationDuration;
 
             Player.position = Vector3.Slerp(initialPosition, hand.position, normalizedTime);
-            Player.rotation = Quaternion.Slerp(initialRotation, Quaternion.LookRotation(head.position - hand.position), normalizedTime);
+            Quaternion lookDirection = Quaternion.LookRotation(head.position - (hand.position + new Vector3(0f, 1.69f, 0f)));
+            Player.cameraRotation = Quaternion.Slerp(initialRotation, lookDirection, normalizedTime);
 
             yield return null;
         }
 
         Player.position = hand.position;
-        Player.rotation = Quaternion.LookRotation(head.position - hand.position);
+        Player.cameraRotation = Quaternion.LookRotation(head.position - (hand.position + new Vector3(0f, 1.69f, 0f)));
 
         yield return new WaitForSeconds(3f);
 
@@ -210,7 +241,7 @@ public class Enemy : Singleton<Enemy>
 
     private IEnumerator FadeOutCoroutine()
     {
-        Material material = renderer.material;
+        Material material = spriteRenderer.material;
         Color colorStart = material.color;
         float time = 0f;
         while (time < 1f)
