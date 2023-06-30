@@ -22,6 +22,11 @@ public class Enemy : Singleton<Enemy>
     [SerializeField] private float wanderRetargetTime;
     [SerializeField] private float chaseSpeed;
     [SerializeField] private float chaseGiveupTime;
+    [SerializeField] private float grabAnimationDuration;
+
+    [Header("References")]
+    [SerializeField] private Transform handPivot;
+    [SerializeField] private Transform headPivot;
 
     // Other components
     private NavMeshAgent navMeshAgent;
@@ -55,8 +60,6 @@ public class Enemy : Singleton<Enemy>
         if (other.gameObject.layer == Player.layer && !LevelManager.isGameOver)
         {
             GrabPlayer();
-
-            // LevelManager.GameLose();
         }
     }
 
@@ -79,7 +82,7 @@ public class Enemy : Singleton<Enemy>
         switch (targetState)
         {
             case NavigationState.NONE:
-            navMeshAgent.destination = transform.position;
+            navMeshAgent.isStopped = true;
             break;
 
             case NavigationState.Wander:
@@ -94,6 +97,8 @@ public class Enemy : Singleton<Enemy>
             Chase();
             break;
         }
+
+        if (previousState == NavigationState.NONE) navMeshAgent.isStopped = false;
     }
 
     private void Wander()
@@ -133,14 +138,35 @@ public class Enemy : Singleton<Enemy>
 
     private void GrabPlayer()
     {
-        if (Player.grabbed == false) return;
+        SetNavigationState(NavigationState.NONE);
+        navMeshAgent.velocity = Vector3.zero;
+        Player.Grabbed();
+        StartCoroutine(GrabPlayerSmooth());
+    }
 
-        // should this actor be in control of the action?
-        // or just notify it?
+    private IEnumerator GrabPlayerSmooth()
+    {
+        Vector3 initialPosition = Player.position;
+        Quaternion initialRotation = Player.rotation;
+        float time = 0f;
+        float normalizedTime = 0f;
+        while (time < grabAnimationDuration)
+        {
+            time += Time.deltaTime;
+            normalizedTime = time / grabAnimationDuration;
 
-        // in any case, the player loses control of their character,
-        // gets pulled up, being held by the monster hand, looking at its face,
-        // and then dies
+            Player.position = Vector3.Slerp(initialPosition, handPivot.position, normalizedTime);
+            Player.rotation = Quaternion.Slerp(initialRotation, Quaternion.LookRotation(headPivot.position - handPivot.position), normalizedTime);
+
+            yield return null;
+        }
+
+        Player.position = handPivot.position;
+        Player.rotation = Quaternion.LookRotation(headPivot.position - handPivot.position);
+
+        yield return new WaitForSeconds(3f);
+
+        LevelManager.GameLose();
     }
 
 

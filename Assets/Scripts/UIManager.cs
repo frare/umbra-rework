@@ -76,11 +76,15 @@ public class UIManager : MonoBehaviour
 
     public static void ShowGameOverScreen()
     {
+        if (instance == null) return;
+
         instance.gameOverScreen.gameObject.SetActive(true);
     }
 
     public static void ShowGameWinScreen()
     {
+        if (instance == null) return;
+        
         instance.gameWinScreen.gameObject.SetActive(true);
     }
 

@@ -5,10 +5,10 @@ using UnityEngine.InputSystem;
 
 public class Player : Singleton<Player>
 {
-    // Static fields
+    // Static properties
     public static int layer { get { return 8; } }
-    public static Vector3 position { get { return instance.transform.position; } }
-    public static bool grabbed { get; private set; }
+    public static Vector3 position { get { return instance.transform.position; } set { instance.transform.position = value; } }
+    public static Quaternion rotation { get { return instance.transform.rotation; } set { instance.transform.rotation = value; } }
 
     // Properties
     public bool isMoving { get { return controller.velocity.x != 0f || controller.velocity.z != 0f; } }
@@ -31,6 +31,7 @@ public class Player : Singleton<Player>
     private bool canSprint { get { return sprintEnergy > 0f; } }
     private float rotationVelocity;
     private float verticalVelocity;
+    private bool isGrabbed;
 
     [Header("Cinemachine")]
     [SerializeField] private Transform cinemachineCameraTarget;
@@ -47,6 +48,7 @@ public class Player : Singleton<Player>
     [SerializeField] private InputManager input;
     [SerializeField] private Transform flashlight;
     [SerializeField] private NightVision nightVision;
+    [SerializeField] private Transform hands;
     private Transform mainCamera;
     private UnityEngine.UI.Image reticle;
     private RaycastHit reticleHit;
@@ -66,17 +68,23 @@ public class Player : Singleton<Player>
         mainCamera = Camera.main.transform;
 
         sprintEnergy = sprintDuration;
+        isGrabbed = false;
     }
 
     private void Update()
     {
+        UpdateReticle();
+
+        if (isGrabbed) return;
+
         Move();
         Gravity();
-        UpdateReticle();
     }
 
     private void LateUpdate()
     {
+        if (isGrabbed) return;
+
         CameraRotation();
     }
 
@@ -178,6 +186,33 @@ public class Player : Singleton<Player>
 
             transform.Rotate(Vector3.up * rotationVelocity);
         }
+    }
+
+    public static void Grabbed()
+    {
+        if (instance.isGrabbed == true) return;
+
+        instance.isGrabbed = true;
+        instance.StartCoroutine(instance.HideHands());
+    }
+
+    private IEnumerator HideHands()
+    {
+        hands.GetComponent<Animator>().enabled = false;
+        
+        Vector3 initialPosition = hands.localPosition;
+        Vector3 finalPosition = hands.localPosition - new Vector3(.5f, 1.5f, 0f);
+        float time = 0f;
+        while (time < 1f)
+        {
+            time += Time.deltaTime;
+
+            hands.localPosition = Vector3.Lerp(initialPosition, finalPosition, time);
+
+            yield return null;
+        }
+
+        hands.gameObject.SetActive(false);
     }
 
     private static float ClampAngle(float angle, float min, float max)
