@@ -193,6 +193,7 @@ public class Player : Singleton<Player>
         if (instance.isGrabbed == true) return;
 
         instance.isGrabbed = true;
+        instance.controller.enabled = false;
         instance.StartCoroutine(instance.HideHands());
     }
 

@@ -138,6 +138,7 @@ public class Enemy : Singleton<Enemy>
 
     private void GrabPlayer()
     {
+        GetComponentInChildren<Animator>().enabled = false;
         SetNavigationState(NavigationState.NONE);
         navMeshAgent.velocity = Vector3.zero;
         Player.Grabbed();
