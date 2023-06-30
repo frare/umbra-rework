@@ -1035,6 +1035,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8589347290463579589, guid: 29aa42f68ce7ef94693397dfd1ce8d21,
+        type: 3}
+      propertyPath: sprintRechargeDelay
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 29aa42f68ce7ef94693397dfd1ce8d21, type: 3}
 --- !u!4 &659347628 stripped
@@ -2445,7 +2450,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1543111314
 RectTransform:
   m_ObjectHideFlags: 0
