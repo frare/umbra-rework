@@ -4894,7 +4894,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2944818733884056919
 Transform:
   m_ObjectHideFlags: 0
@@ -4933,12 +4933,12 @@ MonoBehaviour:
   detectionDuration: 5
   detectionCooldownSpeed: 0.333
   wanderSpeed: 3
-  wanderDistance: 20
-  wanderRetargetTime: 3
+  wanderDistance: 15
+  wanderRetargetTime: 2
   wanderTeleportDistance: 50
   chaseSpeed: 10
   chaseDuration: 5
-  grabAnimationDuration: 2.5
+  grabAnimationDuration: 3
   hand: {fileID: 6501237091299979714}
   head: {fileID: 3813769148149663002}
   grabSprite: {fileID: 1754507584, guid: 9aafe916e24c40e468fce8a930b83e00, type: 3}

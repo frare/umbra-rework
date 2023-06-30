@@ -163,7 +163,7 @@ public class Enemy : Singleton<Enemy>
 
     private void Wander_Teleport()
     {
-        Vector3 randomDirection = (Random.insideUnitSphere).normalized * wanderDistance * 2f;
+        Vector3 randomDirection = (Random.insideUnitSphere).normalized * (wanderDistance + 5f);
         NavMeshHit navHit;
         if (NavMesh.SamplePosition(randomDirection + Player.position, out navHit, wanderDistance, 1))
             transform.position = navHit.position;

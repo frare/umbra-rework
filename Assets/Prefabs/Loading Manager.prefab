@@ -337,8 +337,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 3557690248948667810}
-  panel: {fileID: 0}
+  panel: {fileID: 1090450844746529216}
   loadingIcon: {fileID: 1490171387242884515}
   slideTime: 1
-  minimumDuration: 0
-  iconRotationSpeed: 0
+  minimumDuration: 2
+  iconRotationSpeed: 15
