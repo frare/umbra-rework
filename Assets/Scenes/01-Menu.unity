@@ -669,7 +669,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_BackGroundColor: {r: 0.050980393, g: 0, b: 0.101960786, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -826,6 +826,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1784524986}
   m_CullTransparentMesh: 1
+--- !u!224 &1850521309 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1090450844746529216, guid: 56e2ed2d8a3d2d04f9c921c4f2a8f1c4,
+    type: 3}
+  m_PrefabInstance: {fileID: 8650514219422257235}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2032104747
 GameObject:
   m_ObjectHideFlags: 0
@@ -966,6 +972,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2179995161554300242, guid: 56e2ed2d8a3d2d04f9c921c4f2a8f1c4,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3c246cfe368fc664780fda913998f22e,
+        type: 3}
     - target: {fileID: 3557690248948667810, guid: 56e2ed2d8a3d2d04f9c921c4f2a8f1c4,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -1036,10 +1048,50 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6775422778039568643, guid: 56e2ed2d8a3d2d04f9c921c4f2a8f1c4,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6775422778039568643, guid: 56e2ed2d8a3d2d04f9c921c4f2a8f1c4,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6775422778039568643, guid: 56e2ed2d8a3d2d04f9c921c4f2a8f1c4,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6775422778039568643, guid: 56e2ed2d8a3d2d04f9c921c4f2a8f1c4,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8650514220591856780, guid: 56e2ed2d8a3d2d04f9c921c4f2a8f1c4,
         type: 3}
       propertyPath: m_Name
       value: Loading Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 8650514220591856816, guid: 56e2ed2d8a3d2d04f9c921c4f2a8f1c4,
+        type: 3}
+      propertyPath: panel
+      value: 
+      objectReference: {fileID: 1850521309}
+    - target: {fileID: 8650514220591856816, guid: 56e2ed2d8a3d2d04f9c921c4f2a8f1c4,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8650514220591856816, guid: 56e2ed2d8a3d2d04f9c921c4f2a8f1c4,
+        type: 3}
+      propertyPath: minimumDuration
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8650514220591856816, guid: 56e2ed2d8a3d2d04f9c921c4f2a8f1c4,
+        type: 3}
+      propertyPath: iconRotationSpeed
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56e2ed2d8a3d2d04f9c921c4f2a8f1c4, type: 3}

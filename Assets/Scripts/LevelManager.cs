@@ -71,6 +71,6 @@ public class LevelManager : MonoBehaviour
     {
         Time.timeScale = 1f;
 
-        LoadingManager.LoadScene("02-Game", false);
+        LoadingManager.LoadScene("02-Game");
     }
 }
