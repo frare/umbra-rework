@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1889025360086583292}
   - component: {fileID: 4455148305814041398}
   - component: {fileID: 1769867937955363306}
+  - component: {fileID: 8346014951066397969}
   m_Layer: 0
   m_Name: Lamp_03
   m_TagString: Untagged
@@ -98,6 +99,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.0029749349, y: 0.0034351593, z: 0.022081584}
   m_Center: {x: -4.656613e-10, y: 0, z: 0.010963501}
+--- !u!208 &8346014951066397969
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2797616866260226787}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.0014874676, y: 0.0017175796, z: 0.01104079}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0.011000001}
+  m_TimeToStationary: 0.5
 --- !u!1 &3031565102825569367
 GameObject:
   m_ObjectHideFlags: 0
