@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1289567126056163629}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.075, y: 3.7, z: 0}
+  m_LocalPosition: {x: 0.075, y: 2.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4868,7 +4868,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2481569393678451381}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.6666665, y: 1.5, z: 1}
+  m_LocalPosition: {x: 0, y: 1.8, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4927,12 +4927,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23d9df01307f21249a1f0ac8f23628b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentState: 2
+  currentState: 1
   wanderSpeed: 3
   wanderDistance: 20
   wanderRetargetTime: 3
+  wanderTeleportDistance: 50
   chaseSpeed: 10
   chaseGiveupTime: 0
+  chaseDetectionRange: 0
+  grabAnimationDuration: 2.5
+  hand: {fileID: 6501237091299979714}
+  head: {fileID: 3813769148149663002}
 --- !u!114 &2944818733884056920
 MonoBehaviour:
   m_ObjectHideFlags: 0

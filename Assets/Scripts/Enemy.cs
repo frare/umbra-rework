@@ -20,13 +20,15 @@ public class Enemy : Singleton<Enemy>
     [SerializeField] private float wanderSpeed;
     [SerializeField] private float wanderDistance;
     [SerializeField] private float wanderRetargetTime;
+    [SerializeField] private float wanderTeleportDistance;
     [SerializeField] private float chaseSpeed;
     [SerializeField] private float chaseGiveupTime;
+    [SerializeField] private float chaseDetectionRange;
     [SerializeField] private float grabAnimationDuration;
 
     [Header("References")]
-    [SerializeField] private Transform handPivot;
-    [SerializeField] private Transform headPivot;
+    [SerializeField] private Transform hand;
+    [SerializeField] private Transform head;
 
     // Other components
     private NavMeshAgent navMeshAgent;
@@ -66,6 +68,11 @@ public class Enemy : Singleton<Enemy>
     private void Update()
     {
         if (currentState == NavigationState.Chase) navMeshAgent.destination = Player.position;
+        else if (currentState == NavigationState.Wander)
+        {
+            if (Vector3.Distance(transform.position, Player.position) > wanderTeleportDistance) 
+                Teleport();
+        }
     }
 
 
@@ -104,12 +111,12 @@ public class Enemy : Singleton<Enemy>
     private void Wander()
     {
         Vector3 randomDirection = Random.insideUnitSphere * wanderDistance;
-        
         NavMeshHit navHit;
-        NavMesh.SamplePosition(randomDirection + Player.position, out navHit, wanderDistance, 1);
-        navMeshAgent.destination = navHit.position;
-
-        wanderCoroutine = StartCoroutine(Wander_GetNextDestination());
+        if (NavMesh.SamplePosition(randomDirection + Player.position, out navHit, wanderDistance, 1))
+        {
+            navMeshAgent.destination = navHit.position;
+            wanderCoroutine = StartCoroutine(Wander_GetNextDestination());
+        }
     }
 
     private IEnumerator Wander_GetNextDestination()
@@ -127,8 +134,22 @@ public class Enemy : Singleton<Enemy>
         Wander();
     }
 
+    private void Teleport()
+    {
+        Vector3 randomDirection = (Random.insideUnitSphere).normalized * wanderDistance * 2f;
+        NavMeshHit navHit;
+        if (NavMesh.SamplePosition(randomDirection + Player.position, out navHit, wanderDistance, 1))
+            transform.position = navHit.position;
+    }
+
     private void Chase()
     {
+        RaycastHit hit;
+        if (Physics.Raycast(head.position, Player.position - head.position, out hit, chaseDetectionRange, 1 << Player.layer))
+        {
+            
+        }
+
         // stops moving, do a jumpscare,
         // then starts chasing
 
@@ -156,14 +177,14 @@ public class Enemy : Singleton<Enemy>
             time += Time.deltaTime;
             normalizedTime = time / grabAnimationDuration;
 
-            Player.position = Vector3.Slerp(initialPosition, handPivot.position, normalizedTime);
-            Player.rotation = Quaternion.Slerp(initialRotation, Quaternion.LookRotation(headPivot.position - handPivot.position), normalizedTime);
+            Player.position = Vector3.Slerp(initialPosition, hand.position, normalizedTime);
+            Player.rotation = Quaternion.Slerp(initialRotation, Quaternion.LookRotation(head.position - hand.position), normalizedTime);
 
             yield return null;
         }
 
-        Player.position = handPivot.position;
-        Player.rotation = Quaternion.LookRotation(headPivot.position - handPivot.position);
+        Player.position = hand.position;
+        Player.rotation = Quaternion.LookRotation(head.position - hand.position);
 
         yield return new WaitForSeconds(3f);
 

@@ -967,7 +967,7 @@ PrefabInstance:
     - target: {fileID: 2944818733884056919, guid: 08bb189b5670fa842bb7c425454f4324,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.32
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2944818733884056919, guid: 08bb189b5670fa842bb7c425454f4324,
         type: 3}
@@ -977,7 +977,7 @@ PrefabInstance:
     - target: {fileID: 2944818733884056919, guid: 08bb189b5670fa842bb7c425454f4324,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.93
+      value: 69.4
       objectReference: {fileID: 0}
     - target: {fileID: 2944818733884056919, guid: 08bb189b5670fa842bb7c425454f4324,
         type: 3}
@@ -1016,6 +1016,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2944818733884056921, guid: 08bb189b5670fa842bb7c425454f4324,
         type: 3}
+      propertyPath: hand
+      value: 
+      objectReference: {fileID: 2944818734414911075}
+    - target: {fileID: 2944818733884056921, guid: 08bb189b5670fa842bb7c425454f4324,
+        type: 3}
+      propertyPath: head
+      value: 
+      objectReference: {fileID: 2944818734414911074}
+    - target: {fileID: 2944818733884056921, guid: 08bb189b5670fa842bb7c425454f4324,
+        type: 3}
       propertyPath: handPivot
       value: 
       objectReference: {fileID: 2944818734414911075}
@@ -1027,12 +1037,17 @@ PrefabInstance:
     - target: {fileID: 2944818733884056921, guid: 08bb189b5670fa842bb7c425454f4324,
         type: 3}
       propertyPath: currentState
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2944818733884056921, guid: 08bb189b5670fa842bb7c425454f4324,
         type: 3}
       propertyPath: grabAnimationDuration
       value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2944818733884056921, guid: 08bb189b5670fa842bb7c425454f4324,
+        type: 3}
+      propertyPath: wanderTeleportDistance
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 3813769148149663002, guid: 08bb189b5670fa842bb7c425454f4324,
         type: 3}
