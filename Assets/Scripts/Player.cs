@@ -13,7 +13,7 @@ public class Player : Singleton<Player>
 
     // Properties
     public bool isMoving { get { return controller.velocity.x != 0f || controller.velocity.z != 0f; } }
-    public bool isSprinting { get { return input.sprint && canSprint; } }
+    public bool isSprinting { get { return input.sprint && canSprint && isMoving; } }
 
     [Header("Player Attributes")]
     [SerializeField] private float moveSpeed = 2f;
