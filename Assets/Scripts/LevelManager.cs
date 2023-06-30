@@ -54,6 +54,9 @@ public class LevelManager : Singleton<LevelManager>
     {
         if (instance.pagesCollectedCount >= instance.pagesTotalCount / 2) GameWin();
         else GameLose();
+
+        foreach (AudioSource audio in FindObjectsOfType<AudioSource>())
+            audio.Stop();
     }
 
     private static void GameWin()

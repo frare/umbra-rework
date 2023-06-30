@@ -4929,7 +4929,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 1
   detection: 0
-  detectionRange: 15
+  detectionRange: 10
   detectionDuration: 5
   detectionCooldownSpeed: 0.333
   wanderSpeed: 3
