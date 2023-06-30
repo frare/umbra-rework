@@ -76,9 +76,9 @@ public class Enemy : Singleton<Enemy>
             if (Vector3.Distance(transform.position, Player.position) > wanderTeleportDistance) 
                 Wander_Teleport();
             else
-                Wandering();
+                Wander_Loop();
         }
-        else if (currentState == NavigationState.Chase) Chasing();
+        else if (currentState == NavigationState.Chase) Chase_Loop();
     }
 
 
@@ -102,7 +102,7 @@ public class Enemy : Singleton<Enemy>
             navMeshAgent.autoBraking = true;
             navMeshAgent.speed = wanderSpeed;
             detection = 0f;
-            Wander();
+            Wander_Begin();
             break;
 
             case NavigationState.Chase:
@@ -115,7 +115,7 @@ public class Enemy : Singleton<Enemy>
         if (previousState == NavigationState.NONE) navMeshAgent.isStopped = false;
     }
 
-    private void Wander()
+    private void Wander_Begin()
     {
         Vector3 randomDirection = Random.insideUnitSphere * wanderDistance;
         NavMeshHit navHit;
@@ -126,7 +126,7 @@ public class Enemy : Singleton<Enemy>
         }
     }
 
-    private void Wandering()
+    private void Wander_Loop()
     {
         RaycastHit hit;
         if (Physics.Raycast(head.position, Player.position - head.position, out hit, 
@@ -155,7 +155,7 @@ public class Enemy : Singleton<Enemy>
 
         yield return new WaitForSeconds(wanderRetargetTime);
         
-        Wander();
+        Wander_Begin();
     }
 
     private void Wander_Teleport()
@@ -166,7 +166,7 @@ public class Enemy : Singleton<Enemy>
             transform.position = navHit.position;
     }
 
-    private void Chasing()
+    private void Chase_Loop()
     {
         // stops moving, do a jumpscare,
         // then starts chasing
