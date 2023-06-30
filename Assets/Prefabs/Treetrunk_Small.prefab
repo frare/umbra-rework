@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2079062806480192779}
+  - component: {fileID: 1181244117166985047}
   m_Layer: 0
   m_Name: Treetrunk_Small
   m_TagString: Untagged
@@ -32,6 +33,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1181244117166985047
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8317284044053591137}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.2792523, z: 1}
+  m_Center: {x: 0, y: 0.49108064, z: 0}
 --- !u!1001 &3862340434616473713
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47,17 +61,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 4de5e073725166646ba7555f222829b9,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 58.93
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4de5e073725166646ba7555f222829b9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.045
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4de5e073725166646ba7555f222829b9,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 24.37
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4de5e073725166646ba7555f222829b9,
         type: 3}
